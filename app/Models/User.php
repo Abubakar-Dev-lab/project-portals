@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function managedProjects()
+    {
+        return $this->hasMany(Project::class, 'manager_id');
+    }
 }

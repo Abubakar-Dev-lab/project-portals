@@ -1,5 +1,6 @@
 Project Portals
 Db Mysql project_portals_db
+using sail ,dbeaver
 
 git main done 
 laravel new project psuhed to github lab main brach
@@ -31,3 +32,12 @@ This method should:
 Add the manager_id to the $data array.
 Call the Repository's create method.
 
+made observer ProjectObserver
+Inside the created method (not creating, but created):
+Use Log::info("..."); to log the message. (You will need use Illuminate\Support\Facades\Log;).
+Register the Observer: In a modern Laravel app, you usually do this in the boot method of your app/Providers/AppServiceProvider.php.
+Code: Project::observe(ProjectObserver::class);
+
+in project model defined relationship with user using manager method
+and in ProjectObserver mentioned project title and manager name
+also user relation with project through managedProjects method
