@@ -17,3 +17,17 @@ description is required.
 
 ProjectController
 store method
+
+Refactoring
+
+ProjectRepository
+Inside this class, create a method: public function create(array $data).
+This method should simply return Project::create($data);
+
+ProjectService
+This class needs a Constructor that "Injects" the ProjectRepository.
+Inside this class, create a method: public function createProject(array $data).
+This method should:
+Add the manager_id to the $data array.
+Call the Repository's create method.
+

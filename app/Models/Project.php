@@ -11,4 +11,6 @@ class Project extends Model
         'title',
         'description'
     ];
+
+    //users projects relation?
 }
