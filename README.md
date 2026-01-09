@@ -41,3 +41,14 @@ Code: Project::observe(ProjectObserver::class);
 in project model defined relationship with user using manager method
 and in ProjectObserver mentioned project title and manager name
 also user relation with project through managedProjects method
+
+tasks table,model and relationship with project and users
+project_id (constrained)
+assigned_to (constrained to users table)
+title
+status (default 'todo')
+
+AssignTaskAction,taskcontroler,taskresouce,taskrepositry
+
+refactoring
+
