@@ -3,7 +3,7 @@ Db Mysql project_portals_db
 using sail ,dbeaver
 
 git main done 
-laravel new project psuhed to github lab main brach
+laravel new project pushed to github lab main branch
 
 now branch CRUD+Form-Request
 
@@ -51,4 +51,9 @@ status (default 'todo')
 AssignTaskAction,taskcontroler,taskresouce,taskrepositry
 
 refactoring
+
+Day 2
+git checkout -b feature/CRUD-Completing
+removing auth and just focusing on CRUD completion
+ProjectReposirty and ProjectService file adding RUD of CRUD
 

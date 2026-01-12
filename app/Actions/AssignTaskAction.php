@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use App\Models\Task;
 use App\Repositories\TaskRepository;
 
 class AssignTaskAction

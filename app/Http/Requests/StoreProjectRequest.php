@@ -22,6 +22,7 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'manager_id' => 'required',
             'title' => 'required|max:255',
             'description' => 'required'
         ];
