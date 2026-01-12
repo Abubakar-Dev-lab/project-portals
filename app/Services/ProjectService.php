@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\ProjectRepository;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectService
 {

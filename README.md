@@ -56,4 +56,8 @@ Day 2
 git checkout -b feature/CRUD-Completing
 removing auth and just focusing on CRUD completion
 ProjectReposirty and ProjectService file adding RUD of CRUD
+now project controllertask
+CRUD for project done
 
+next CRUD for task repo,service ,controller 
+done next is refactoring 
