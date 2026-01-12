@@ -9,10 +9,10 @@ class TaskService
 
     public function __construct(protected TaskRepository $taskRepo) {}
 
-    // public function createTask(array $data)
-    // {
-    //     return $this->taskRepo->create($data);
-    // }
+    public function createTask(array $data)
+    {
+        return $this->taskRepo->create($data);
+    }
 
     public function getAllTasks()
     {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\AssignTaskAction;
 use App\Http\Resources\TaskResource;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -23,16 +22,10 @@ class TaskController extends Controller
         return new TaskResource($tasks);
     }
 
-    public function store(Request $request, AssignTaskAction $assignTaskAction)
+    public function store(Request $request)
     {
-        $data = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'assigned_to' => 'required|exists:users,id',
-            'title' => 'required|string|max:255'
-        ]);
-
-        $task = $assignTaskAction->handle($data);
-
+        $data = $request->all();
+        $task = $this->taskService->createTask($data);
         return new TaskResource($task);
     }
 
