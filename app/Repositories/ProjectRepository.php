@@ -11,9 +11,9 @@ class ProjectRepository
         return Project::create($data);
     }
 
-    public function all()
+    public function paginate($perPage = 10)
     {
-        return Project::all();
+        return Project::with('manager')->paginate($perPage);
     }
 
     public function find($id)

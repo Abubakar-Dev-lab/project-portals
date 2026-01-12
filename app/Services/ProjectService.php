@@ -16,7 +16,7 @@ class ProjectService
 
     public function getAllProjects()
     {
-        return $this->projectRepo->all();
+        return $this->projectRepo->paginate();
     }
 
     public function getProjectById($id)

@@ -6,6 +6,7 @@ use App\Services\ProjectService;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -14,34 +15,43 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = $this->projectService->getAllProjects();
-        return response()->json($projects);
+        return view('projects.index', compact('projects'));
+    }
+
+    public function create()
+    {
+        return view('projects.create');
     }
 
     public function show($id)
     {
-        $projects =  $this->projectService->getProjectById($id);
-        return response()->json($projects);
+        $project =  $this->projectService->getProjectById($id);
+        return view('projects.show', compact('project'));
     }
 
     public function store(StoreProjectRequest $request)
     {
         $project = $this->projectService->createProject($request->validated());
-        return response()->json($project, 201);
+        return redirect()->route('projects.index')->with('success', 'Project created!');
     }
 
-    public function update(Request $request, $id)
+    public function edit($id)
     {
-        $data = $request->only([
-            'title',
-            'description'
-        ]);
+        $project =  $this->projectService->getProjectById($id);
+        return view('projects.edit', compact('project'));
+    }
+
+    public function update(UpdateProjectRequest $request, $id)
+    {
+        $data = $request->validated();
         $project = $this->projectService->updateProject($id, $data);
-        return response()->json($project);
+        return redirect()->route('projects.index')->with('success', 'Project Updated Successfully.');
     }
 
     public function destroy($id)
     {
         $this->projectService->deleteProject($id);
-        return response()->json(['message'=>'Project deleted successfully']);
+        return redirect()->route('projects.index')
+            ->with('success', 'Project deleted successfully!');
     }
 }
