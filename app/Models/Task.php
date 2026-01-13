@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Task extends Model
+{
+    protected $fillable = [
+        'project_id',
+        'assigned_to',
+        'title',
+        'status',
+        'description'
+    ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public static function statuses()
+    {
+        return [
+            'todo' => 'To Do',
+            'in_progress' => 'In Progress',
+            'done' => 'Done'
+        ];
+    }
+}
