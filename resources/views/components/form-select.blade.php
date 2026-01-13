@@ -1,16 +1,26 @@
 @props(['name', 'label', 'options' => [], 'selected' => ''])
 
 <div class="mb-4">
-    <label class="block text-gray-700 font-bold mb-2">{{ $label }}</label>
-    <select name="{{ $name }}" class="w-full border rounded px-3 py-2 @error($name) border-red-500 @enderror">
+    <label for="{{ $name }}" class="block text-sm font-bold text-gray-700 mb-1">
+        {{ $label }}
+    </label>
+
+    <select
+        name="{{ $name }}"
+        id="{{ $name }}"
+        {{ $attributes->merge([
+            'class' => 'w-full rounded-md shadow-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500 ' . ($errors->has($name) ? 'border-red-500' : '')
+        ]) }}
+    >
         <option value="">-- Select {{ $label }} --</option>
-        @foreach ($options as $id => $display)
+        @foreach($options as $id => $display)
             <option value="{{ $id }}" {{ old($name, $selected) == $id ? 'selected' : '' }}>
                 {{ $display }}
             </option>
         @endforeach
     </select>
+
     @error($name)
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+        <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
     @enderror
 </div>

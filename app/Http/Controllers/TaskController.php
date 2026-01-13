@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use App\Models\User;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use App\Services\TaskService;
-use App\Http\Resources\TaskResource;
+use App\Services\UserService;
+use App\Services\ProjectService;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
-    public function __construct(protected TaskService $taskService) {}
+    public function __construct(
+        protected TaskService $taskService,
+        protected ProjectService $projectService,
+        protected UserService $userService,
+
+    ) {}
 
     public function index()
     {
@@ -23,8 +27,8 @@ class TaskController extends Controller
 
     public function create()
     {
-        $projects = Project::pluck('title','id');
-        $users = User::pluck('name','id');
+        $projects = Project::pluck('title', 'id');
+        $users = User::pluck('name', 'id');
         return view('tasks.create', compact('projects', 'users'));
     }
 
@@ -44,7 +48,9 @@ class TaskController extends Controller
     public function edit($id)
     {
         $task = $this->taskService->getTaskById($id);
-        return view('tasks.edit', compact('task'));
+        $projects = $this->projectService->getProjectsForDropdown();
+        $users = $this->userService->getUsersForDropdown();
+        return view('tasks.edit', compact('task', 'projects', 'users'));
     }
 
     public function update(UpdateTaskRequest $request, $id)

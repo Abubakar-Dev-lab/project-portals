@@ -18,7 +18,7 @@ class ProjectRepository
 
     public function find($id)
     {
-        return Project::with(['manager','tasks.user'])->findOrFail($id);
+        return Project::with(['manager', 'tasks.user'])->findOrFail($id);
     }
 
     public function update($id, array $data)
@@ -32,5 +32,10 @@ class ProjectRepository
     {
         $project = $this->find($id);
         return $project->delete();
+    }
+
+    public function getDropdownList()
+    {
+        return Project::orderBy('title')->pluck('title', 'id');
     }
 }

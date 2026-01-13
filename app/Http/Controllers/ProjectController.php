@@ -38,7 +38,9 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project =  $this->projectService->getProjectById($id);
-        return view('projects.edit', compact('project'));
+        $managers = User::pluck('name', 'id');
+
+        return view('projects.edit', compact('project','managers'));
     }
 
     public function update(UpdateProjectRequest $request, $id)

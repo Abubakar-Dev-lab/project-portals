@@ -33,4 +33,9 @@ class ProjectService
     {
         return  $this->projectRepo->delete($id);
     }
+
+    public function getProjectsForDropdown()
+    {
+        return $this->projectRepo->getDropdownList();
+    }
 }

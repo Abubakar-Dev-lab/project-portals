@@ -1,40 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-    @if ($errors->any())
-        <div class="bg-red-500 text-white p-4 mb-6">
-            <strong>Validation Errors:</strong>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-6">
+            <a href="{{ route('projects.index') }}" class="text-blue-600 hover:underline text-sm">← Back to Projects</a>
+            <h1 class="text-3xl font-bold text-gray-900 mt-2">Create New Project</h1>
         </div>
-    @endif
-    <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold mb-6">Create New Project</h2>
 
-        <form action="{{ route('projects.store') }}" method="POST">
-            @csrf
+        <div class="bg-white shadow-md rounded-xl p-8 border border-gray-200">
+            <form action="{{ route('projects.store') }}" method="POST">
+                @csrf
 
-            <x-form-input name="title" label="Project Title" />
+                <x-form-input name="title" label="Project Title" placeholder="e.g. Modernizing the Warehouse API" />
 
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2">Description</label>
-                <textarea name="description" rows="5"
-                    class="w-full border rounded px-3 py-2 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
-                @error('description')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+                <!-- Note: We are using a component for Textarea too -->
+                <x-form-textarea name="description" label="Description" placeholder="What is this project about?" />
 
-            <!-- This is beautiful! One line instead of 10 -->
-            <x-form-select name="manager_id" label="Manager" :options="$managers" />
+                <x-form-select name="manager_id" label="Project Manager" :options="$managers" />
 
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded">Save Project</button>
-                <a href="{{ route('projects.index') }}" class="text-gray-600">Cancel</a>
-            </div>
-        </form>
+                <div class="flex items-center justify-end space-x-4 border-t pt-6 mt-6">
+                    <a href="{{ route('projects.index') }}" class="text-gray-600 hover:text-gray-900">Cancel</a>
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow transition">
+                        Save Project
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
