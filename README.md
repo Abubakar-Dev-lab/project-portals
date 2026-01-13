@@ -87,3 +87,4 @@ Used request()->routeIs('projects.*') wildcards to keep navigation links active 
 Data Safety: Managed complex relationships with cascadeOnDelete for projects and nullOnDelete for tasks, ensuring the database stays clean while preserving historical data.
 
 
+next add comments etc on code and then add auth manually for single user  then handle for multiple user like admin,mangers,users etc 

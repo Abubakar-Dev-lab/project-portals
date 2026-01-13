@@ -13,7 +13,6 @@
 
                 <x-form-input name="title" label="Project Title" placeholder="e.g. Modernizing the Warehouse API" />
 
-                <!-- Note: We are using a component for Textarea too -->
                 <x-form-textarea name="description" label="Description" placeholder="What is this project about?" />
 
                 <x-form-select name="manager_id" label="Project Manager" :options="$managers" />

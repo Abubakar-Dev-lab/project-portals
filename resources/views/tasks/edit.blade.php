@@ -20,7 +20,6 @@
 
                 <x-form-select name="assigned_to" label="Assign to Worker" :options="$users" :selected="$task->assigned_to" />
 
-                <!-- Using our Model helper for the statuses -->
                 <x-form-select name="status" label="Status" :options="['todo' => 'To Do', 'in_progress' => 'In Progress', 'done' => 'Done']" :selected="$task->status" />
 
                 <div class="flex items-center justify-end space-x-4 border-t pt-6 mt-6">
