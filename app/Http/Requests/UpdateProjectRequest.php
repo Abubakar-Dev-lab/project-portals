@@ -22,9 +22,10 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required|max:255',
-            'description' => 'sometimes|required',
-            // 'manager_id' => 'sometimes|required|exists:users,id'
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'manager_id' => 'sometimes|required|exists:users,id',
+            'status'      => 'sometimes|required|string|in:pending,active,completed',
         ];
     }
 }

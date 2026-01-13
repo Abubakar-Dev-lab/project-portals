@@ -11,9 +11,9 @@ class TaskRepository
         return Task::create($data);
     }
 
-    public function all()
+    public function paginate($perPage = 10)
     {
-        return Task::all();
+        return Task::with(['project', 'user'])->paginate($perPage);
     }
 
     public function find($id)

@@ -61,3 +61,11 @@ CRUD for project done
 
 next CRUD for task repo,service ,controller 
 done next is refactoring 
+
+Project update refactoring done by using paginate and with and views and update request form
+
+now Task performace update similar way 
+done 
+
+next ui and routes
+cheking routes make manuall not resource!

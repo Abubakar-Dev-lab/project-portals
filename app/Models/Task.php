@@ -10,7 +10,8 @@ class Task extends Model
         'project_id',
         'assigned_to',
         'title',
-        'status'
+        'status',
+        'description'
     ];
 
     public function project()
@@ -20,6 +21,6 @@ class Task extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'assigned_to');
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 }

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TaskResource;
-use App\Services\TaskService;
+use App\Models\Task;
+use App\Models\User;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Services\TaskService;
+use App\Http\Resources\TaskResource;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -13,36 +18,46 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = $this->taskService->getAllTasks();
-        return TaskResource::collection($tasks);
+        return view('tasks.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+        $projects = Project::pluck('title','id');
+        $users = User::pluck('name','id');
+        return view('tasks.create', compact('projects', 'users'));
     }
 
     public function show($id)
     {
-        $tasks =  $this->taskService->getTaskById($id);
-        return new TaskResource($tasks);
+        $task =  $this->taskService->getTaskById($id);
+        return view('tasks.show', compact('task'));
     }
 
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $task = $this->taskService->createTask($data);
-        return new TaskResource($task);
+        return redirect()->route('tasks.index')->with('success', 'Task created!');
     }
 
-
-    public function update(Request $request, $id)
+    public function edit($id)
     {
-        $data = $request->only([
-            'title',
-            'description'
-        ]);
+        $task = $this->taskService->getTaskById($id);
+        return view('tasks.edit', compact('task'));
+    }
+
+    public function update(UpdateTaskRequest $request, $id)
+    {
+        $data = $request->validated();
         $task = $this->taskService->updateTask($id, $data);
-        return response()->json($task);
+        return redirect()->route('tasks.index')->with('success', 'Task Updated Successfully.');
     }
 
     public function destroy($id)
     {
         $this->taskService->deleteTask($id);
-        return response()->json(['message' => 'Task deleted successfully']);
+        return redirect()->route('tasks.index')
+            ->with('success', 'Task deleted successfully!');
     }
 }

@@ -16,7 +16,7 @@ class TaskService
 
     public function getAllTasks()
     {
-        return $this->taskRepo->all();
+        return $this->taskRepo->paginate();
     }
 
     public function getTaskById($id)

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\ProjectService;
-// use Illuminate\Support\Facades\Request;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\User;
 
 class ProjectController extends Controller
 {
@@ -20,7 +19,8 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('projects.create');
+        $managers = User::pluck('name', 'id');
+        return view('projects.create', compact('managers'));
     }
 
     public function show($id)

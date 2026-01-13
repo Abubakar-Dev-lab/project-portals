@@ -10,7 +10,8 @@ class Project extends Model
     protected $fillable = [
         'manager_id',
         'title',
-        'description'
+        'description',
+        'status'
     ];
 
     public function manager()

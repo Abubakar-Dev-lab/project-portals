@@ -18,7 +18,7 @@ class ProjectRepository
 
     public function find($id)
     {
-        return Project::findOrFail($id);
+        return Project::with(['manager','tasks.user'])->findOrFail($id);
     }
 
     public function update($id, array $data)
