@@ -10,7 +10,7 @@
         <div class="bg-white shadow-md rounded-xl p-8 border border-gray-200">
             <form action="{{ route('projects.update', $project->id) }}" method="POST">
                 @csrf
-                @method('PUT') <!-- Crucial: Browsers don't support PUT, so Laravel "fakes" it -->
+                @method('PUT')
 
                 <x-form-input name="title" label="Project Title" :value="$project->title" />
 
@@ -18,7 +18,6 @@
 
                 <x-form-select name="manager_id" label="Project Manager" :options="$managers" :selected="$project->manager_id" />
 
-                <!-- Now we can easily add a Status dropdown only on the Edit page -->
                 <x-form-select name="status" label="Project Status" :options="['pending' => 'Pending', 'active' => 'Active', 'completed' => 'Completed']" :selected="$project->status" />
 
                 <div class="flex items-center justify-end space-x-4 border-t pt-6 mt-6">

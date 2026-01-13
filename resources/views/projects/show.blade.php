@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="max-w-4xl mx-auto">
-        <!-- Breadcrumb & Actions -->
         <div class="flex justify-between items-start mb-8">
             <div>
                 <a href="{{ route('projects.index') }}" class="text-blue-600 hover:underline text-sm">← Back to Projects</a>
@@ -14,7 +13,6 @@
             </div>
         </div>
 
-        <!-- Project Info Card -->
         <div class="bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden mb-10">
             <div class="px-8 py-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 border-b pb-2">General Information</h3>

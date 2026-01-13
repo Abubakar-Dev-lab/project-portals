@@ -13,6 +13,5 @@
         </a>
     </div>
 
-    <!-- We just include the partial and pass the data -->
     @include('projects._table', ['projects' => $projects])
 @endsection
