@@ -44,6 +44,24 @@
                     ])>
                         Tasks
                     </a>
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('admin.users.index') }}" @class([
+                            'px-4 transition',
+                            'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
+                                'admin.users.*'),
+                            'text-gray-600 hover:text-blue-500' => !request()->routeIs('admin.users.*'),
+                        ])>
+                            User Management
+                        </a>
+                    @endif
+                    <a href="{{ route('profile.edit') }}" @class([
+                        'transition-colors duration-200',
+                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
+                            'tasks.*'),
+                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('profile.*'),
+                    ])>
+                        Profile
+                    </a>
 
                     <!-- Secure Logout Form -->
                     <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -88,6 +106,19 @@
                         setTimeout(() => msg.remove(), 500);
                     }
                 }, 3000);
+            </script>
+        @endif
+        @if (session('error'))
+            <div id="error-msg" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 shadow-sm">
+                <p class="font-bold">Access Denied</p>
+                <p>{{ session('error') }}</p>
+            </div>
+            <script>
+                // Auto-hide the error after 5 seconds (longer than success)
+                setTimeout(() => {
+                    const msg = document.getElementById('error-msg');
+                    if (msg) msg.remove();
+                }, 5000);
             </script>
         @endif
 

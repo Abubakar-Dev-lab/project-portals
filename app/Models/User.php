@@ -66,4 +66,13 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_ADMIN;
     }
+
+    public static function getRoles(): array
+    {
+        return [
+            self::ROLE_WORKER => 'Worker',
+            self::ROLE_MANAGER => 'Manager',
+            self::ROLE_ADMIN => 'Admin',
+        ];
+    }
 }
