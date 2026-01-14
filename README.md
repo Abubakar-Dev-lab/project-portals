@@ -88,3 +88,13 @@ Data Safety: Managed complex relationships with cascadeOnDelete for projects and
 
 
 next add comments etc on code and then add auth manually for single user  then handle for multiple user like admin,mangers,users etc 
+new branch for auth+user-profile
+3 types of users worker,manager,admin 
+by registering every user is a worker we make admin thorugh dev mode suing tinker or seeders etc and admin can change roles of users only thorugh dashboard
+
+Dev →→Runs Seeder →→Admin #1 exists.
+Admin #1 →→Logs in →→Uses UI to create Manager #1.
+Manager #1 →→Logs in →→Creates Project A.
+Public User →→Registers →→Automatically becomes Worker #1.
+Manager #1 →→Edits Project A →→Assigns Worker #1 to it.
+

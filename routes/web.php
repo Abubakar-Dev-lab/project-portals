@@ -3,10 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\Auth\RegisterController;
 
-// Set a homepage
 Route::get('/', function () {
-    return redirect()->route('projects.index');
+    return redirect()->route('auth.login');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
 });
 
 Route::controller(ProjectController::class)->prefix('projects')->name('projects.')->group(function () {

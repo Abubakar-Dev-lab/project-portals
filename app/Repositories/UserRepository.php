@@ -10,4 +10,9 @@ class UserRepository
     {
         return User::orderBy('name')->pluck('name', 'id');
     }
+
+    public function create(array $data)
+    {
+        return User::create($data);
+    }
 }
