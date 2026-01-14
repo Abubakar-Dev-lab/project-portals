@@ -98,3 +98,6 @@ Manager #1 →→Logs in →→Creates Project A.
 Public User →→Registers →→Automatically becomes Worker #1.
 Manager #1 →→Edits Project A →→Assigns Worker #1 to it.
 
+regiter ui and bankend done using authservice,regiter controller userreop regiter blade in auth folder
+
+login ui and bakend
