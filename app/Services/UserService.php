@@ -14,7 +14,7 @@ class UserService
         return $this->userRepo->getDropdownList();
     }
 
-    public function updateProfile(array $data, User $user)
+    public function updateProfile(User $user, array $data)
     {
         if (empty($data['password'])) {
             unset($data['password']);
@@ -22,7 +22,7 @@ class UserService
         if ($user->is(auth()->user())) {
             unset($data['role']);
         }
-        return $this->userRepo->update($data, $user);
+        return $this->userRepo->update($user, $data);
     }
 
     public function getAllUsers()

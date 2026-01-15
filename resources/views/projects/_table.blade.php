@@ -32,17 +32,21 @@
                         <div class="flex justify-end items-center space-x-4">
                             <a href="{{ route('projects.show', $project->id) }}"
                                 class="text-blue-600 hover:text-blue-900">View</a>
-                            <a href="{{ route('projects.edit', $project->id) }}"
-                                class="text-yellow-600 hover:text-yellow-900">Edit</a>
-
+                            @can('update', $project)
+                                <a href="{{ route('projects.edit', $project->id) }}"
+                                    class="text-yellow-600 hover:text-yellow-900">Edit</a>
+                            @endcan
+                            @can('delete', $project)
+                            @endcan
                             <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
                                 onsubmit="return confirm('Delete this project and all its tasks?')">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:text-red-900 font-bold">Delete</button>
                             </form>
-                        </div>
-                    </td>
-                </tr>
+                        @endcan
+                    </div>
+                </td>
+            </tr>
             @empty
                 <tr>
                     <td colspan="4" class="px-6 py-12 text-center text-gray-500">No projects found.</td>

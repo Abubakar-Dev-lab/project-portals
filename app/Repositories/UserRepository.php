@@ -25,7 +25,7 @@ class UserRepository
     {
         return User::withCount('tasks')->findOrFail($id);
     }
-    public function update(array $data, User $user)
+    public function update(User $user, array $data)
     {
         return $user->update($data);
     }

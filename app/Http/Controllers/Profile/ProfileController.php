@@ -13,13 +13,13 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = auth()->user();
-        return view('profile.edit',compact('user'));
+        return view('profile.edit', compact('user'));
     }
 
     public function update(UpdateProfileRequest $request)
     {
         $userId = auth()->user();
-        $this->userService->updateProfile($request->validated(), $userId);
+        $this->userService->updateProfile($userId, $request->validated());
         return back()->with('success', 'Profile updated ');
     }
 }

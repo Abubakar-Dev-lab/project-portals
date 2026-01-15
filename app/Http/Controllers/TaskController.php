@@ -53,7 +53,7 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $this->taskService->updateTask($request->validated(), $task);
+        $this->taskService->updateTask($task, $request->validated());
         return redirect()->route('tasks.index')->with('success', 'Task Updated Successfully.');
     }
 

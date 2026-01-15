@@ -21,7 +21,7 @@ class TaskRepository
         return Task::with(['project', 'user'])->findOrFail($id);
     }
 
-    public function update(array $data, Task $task)
+    public function update(Task $task, array $data,)
     {
         $task->update($data);
         return $task;

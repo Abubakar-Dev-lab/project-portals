@@ -24,24 +24,29 @@ class ProjectController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Project::class);
         $managers = $this->userService->getUsersForDropdown();
         return view('projects.create', compact('managers'));
     }
 
     public function show(Project $project)
     {
+        $this->authorize('view', $project);
         $project = $this->projectService->getProjectDetails($project);
         return view('projects.show', compact('project'));
     }
 
     public function store(StoreProjectRequest $request)
     {
+        $this->authorize('create', Project::class);
         $project = $this->projectService->createProject($request->validated());
         return redirect()->route('projects.index')->with('success', 'Project created!');
     }
 
     public function edit(Project $project)
     {
+        $this->authorize('update', $project);
+
         $managers = $this->userService->getUsersForDropdown();
 
         return view('projects.edit', compact('project', 'managers'));
@@ -49,12 +54,14 @@ class ProjectController extends Controller
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        $this->authorize('update', $project);
         $this->projectService->updateProject($project, $request->validated());
         return redirect()->route('projects.index')->with('success', 'Project Updated Successfully.');
     }
 
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
         $this->projectService->deleteProject($project);
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');

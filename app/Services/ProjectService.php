@@ -25,9 +25,9 @@ class ProjectService
         return $this->projectRepo->find($id);
     }
 
-    public function updateProject(array $data, Project $project)
+    public function updateProject(Project $project, array $data)
     {
-        return $this->projectRepo->update($data, $project);
+        return $this->projectRepo->update($project, $data);
     }
 
     public function deleteProject(Project $project)

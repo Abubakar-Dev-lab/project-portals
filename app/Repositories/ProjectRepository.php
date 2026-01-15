@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Models\Project;
 
 class ProjectRepository
@@ -13,7 +14,19 @@ class ProjectRepository
 
     public function paginate($perPage = 10)
     {
-        return Project::with('manager')->paginate($perPage);
+        $user = auth()->user();
+        $query = Project::with('manager');
+
+        if ($user->isAdmin()) {
+            return $query->latest()->paginate($perPage);
+        }
+
+        if ($user->role === User::ROLE_MANAGER) {
+            return $query->where('manager_id', $user->id)->latest()->paginate($perPage);
+        }
+        return $query->whereHas('tasks', function ($q) use ($user) {
+            $q->where('assigned_to', $user->id);
+        })->latest()->paginate($perPage);
     }
 
     public function find($id)
@@ -21,7 +34,7 @@ class ProjectRepository
         return Project::with(['manager', 'tasks.user'])->findOrFail($id);
     }
 
-    public function update(array $data, Project $project)
+    public function update(Project $project, array $data,)
     {
         $project->update($data);
         return $project;

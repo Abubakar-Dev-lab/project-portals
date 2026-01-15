@@ -22,6 +22,12 @@ class ProjectPolicy
             $project->tasks()->where('assigned_to', $user->id)->exists();
     }
 
+    // Check if user is even allowed to start a project
+    public function create(User $user): bool
+    {
+        return $user->role === User::ROLE_MANAGER || $user->isAdmin();
+    }
+
     public function update(User $user, Project $project): bool
     {
         // Only the manager who owns the project can update it
