@@ -17,11 +17,8 @@ class UserController extends Controller
         return  view('admin.users.index', compact('users'));
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        // 1. Get the user to be edited
-        $user = $this->userService->getUserById($id);
-
         // 2. Get the roles from our Model's static method
         $roles = $this->userService->getAvailableRoles();
 
@@ -30,17 +27,17 @@ class UserController extends Controller
 
 
 
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, User $user )
     {
-        $this->userService->updateProfile($id, $request->validated());
+        $this->userService->updateProfile($request->validated(), $user);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
         // The Service now handles the logic. We just check the result.
-        $deleted = $this->userService->deleteUser($id);
+        $deleted = $this->userService->deleteUser($user);
 
         if (!$deleted) {
             return back()->with('error', 'Action blocked: You cannot delete yourself or a manager with active projects.');

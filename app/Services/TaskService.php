@@ -25,9 +25,9 @@ class TaskService
         return $this->taskRepo->find($id);
     }
     //
-    public function updateTask(Task $task, array $data)
+    public function updateTask(array $data, Task $task)
     {
-        return $this->taskRepo->update($task, $data);
+        return $this->taskRepo->update($data, $task);
     }
     //
     public function deleteTask(Task $task)

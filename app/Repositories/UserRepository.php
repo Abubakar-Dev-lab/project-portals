@@ -25,22 +25,18 @@ class UserRepository
     {
         return User::withCount('tasks')->findOrFail($id);
     }
-    public function update($userId, array $data)
+    public function update(array $data, User $user)
     {
-        $user = $this->find($userId);
         return $user->update($data);
     }
 
-    public function delete($id)
+    public function delete(User $user)
     {
-        $user = $this->find($id);
         return $user->delete();
     }
 
-    public function getProjectsCount($id)
+    public function getProjectsCount(User $user)
     {
-        $user = $this->find($id);
-        // managedProjects() is the relationship we built earlier
-        return $user->managedProjects()->count();
+        return $user->loadCount('managedProjects');
     }
 }
