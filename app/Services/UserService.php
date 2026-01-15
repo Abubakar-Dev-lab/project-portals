@@ -19,7 +19,7 @@ class UserService
         if (empty($data['password'])) {
             unset($data['password']);
         }
-        if ($user->id === auth()->id()) {
+        if ($user->is(auth()->user())) {
             unset($data['role']);
         }
         return $this->userRepo->update($data, $user);

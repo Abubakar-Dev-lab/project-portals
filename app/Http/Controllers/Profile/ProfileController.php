@@ -9,6 +9,7 @@ use App\Services\UserService;
 class ProfileController extends Controller
 {
     public function __construct(protected UserService $userService) {}
+
     public function edit()
     {
         $user = auth()->user();
@@ -17,8 +18,8 @@ class ProfileController extends Controller
 
     public function update(UpdateProfileRequest $request)
     {
-        $userId = auth()->id();
-        $this->userService->updateProfile($userId, $request->validated());
+        $userId = auth()->user();
+        $this->userService->updateProfile($request->validated(), $userId);
         return back()->with('success', 'Profile updated ');
     }
 }
