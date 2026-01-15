@@ -13,7 +13,7 @@ class AuthService
     public function register(array $data)
     {
         $data['role'] = User::ROLE_WORKER;
-        $this->userRepo->create($data);
+        return $this->userRepo->create($data);
     }
 
     public function login(array $credentials, bool $remember = false): bool

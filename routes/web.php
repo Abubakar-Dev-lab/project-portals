@@ -10,7 +10,7 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('projects.index');
 });
 
 

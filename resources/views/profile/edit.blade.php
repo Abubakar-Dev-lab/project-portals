@@ -5,7 +5,10 @@
         <form action="{{ route('profile.update') }}" method="POST">
             @csrf @method('PUT')
             @include('users._fields')
-            <button type="submit">Update My Profile</button>
+            <p
+                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+                <button type="submit">Update My Profile</button>
+            </p>
         </form>
     </div>
 @endsection

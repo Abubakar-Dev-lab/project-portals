@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\UserRepository;
 
 class UserService
@@ -31,11 +32,21 @@ class UserService
 
     public function getUserById($id)
     {
-        return $this->userRepo->findById($id);
+        return $this->userRepo->find($id);
+    }
+
+    public function getAvailableRoles()
+    {
+        // The service provides the roles defined in the Model constants
+        return User::getRoles();
     }
 
     public function deleteUser($id)
     {
+        // 1. Logic Check: Prevent self-deletion at the service level
+        if ((int)$id === (int)auth()->id()) {
+            return false;
+        }
         // 1. Business Rule: A manager with active projects cannot be deleted
         $projectCount = $this->userRepo->getProjectsCount($id);
 

@@ -23,7 +23,7 @@ class UserController extends Controller
         $user = $this->userService->getUserById($id);
 
         // 2. Get the roles from our Model's static method
-        $roles = User::getRoles();
+        $roles = $this->userService->getAvailableRoles();
 
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -39,16 +39,11 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        // 1. Self-deletion check (Keep this!)
-        if ((int)$id === (int)auth()->id()) {
-            return back()->with('error', 'You cannot delete yourself.');
-        }
-
-        // 2. Try to delete via service
+        // The Service now handles the logic. We just check the result.
         $deleted = $this->userService->deleteUser($id);
 
         if (!$deleted) {
-            return back()->with('error', 'Cannot delete user: This manager is still responsible for active projects. Reassign the projects first.');
+            return back()->with('error', 'Action blocked: You cannot delete yourself or a manager with active projects.');
         }
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');

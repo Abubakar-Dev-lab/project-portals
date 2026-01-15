@@ -27,8 +27,8 @@ class TaskController extends Controller
 
     public function create()
     {
-        $projects = Project::pluck('title', 'id');
-        $users = User::pluck('name', 'id');
+        $projects = $this->projectService->getProjectsForDropdown();
+        $users = $this->userService->getUsersForDropdown();;
         return view('tasks.create', compact('projects', 'users'));
     }
 

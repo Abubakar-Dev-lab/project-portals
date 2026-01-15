@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Services\ProjectService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\User;
+use App\Services\UserService;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected ProjectService $projectService) {}
+    public function __construct(
+        protected ProjectService $projectService,
+        protected UserService $userService,
+
+    ) {}
 
     public function index()
     {
@@ -19,7 +23,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $managers = User::pluck('name', 'id');
+        $managers = $this->userService->getUsersForDropdown();
         return view('projects.create', compact('managers'));
     }
 
@@ -38,9 +42,9 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project =  $this->projectService->getProjectById($id);
-        $managers = User::pluck('name', 'id');
+        $managers = $this->userService->getUsersForDropdown();
 
-        return view('projects.edit', compact('project','managers'));
+        return view('projects.edit', compact('project', 'managers'));
     }
 
     public function update(UpdateProjectRequest $request, $id)
