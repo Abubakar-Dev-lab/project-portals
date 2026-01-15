@@ -37,7 +37,6 @@
                                     class="text-yellow-600 hover:text-yellow-900">Edit</a>
                             @endcan
                             @can('delete', $project)
-                            @endcan
                             <form action="{{ route('projects.destroy', $project->id) }}" method="POST"
                                 onsubmit="return confirm('Delete this project and all its tasks?')">
                                 @csrf @method('DELETE')

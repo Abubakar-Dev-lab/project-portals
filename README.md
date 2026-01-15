@@ -152,3 +152,24 @@ Security is implemented through a multi-layered approach, combining global middl
 ### Internal Authorization (Upcoming)
 - **Layered Defense:** While middleware handles the "Front Door" (Authentication), the system is being upgraded with **Laravel Policies** to handle "Internal Doors" (Ownership).
 - **Ownership Verification:** Logic will ensure that Managers can only modify projects they created, and Workers can only update tasks assigned specifically to them.
+
+
+Now doing policies 
+
+## 🛡️ 7. Full-Spectrum Authorization
+The application implements a "Double-Lock" security strategy to ensure maximum data privacy and system integrity.
+
+### 1. Request Filtering (Repository Level)
+To prevent horizontal privilege escalation, the Repository layer automatically filters `index()` queries based on the authenticated user's role:
+- **Admins:** View global datasets.
+- **Managers:** View only projects they manage and tasks within those projects.
+- **Workers:** View only projects where they have active task assignments.
+
+### 2. Action Authorization (Policy Level)
+Granular permissions are enforced using **Laravel Policies** and **Route Model Binding**:
+- `view`: Ensures only assigned participants can see project/task details.
+- `update`: Restricts editing to the owner or an administrator.
+- `delete`: Restricts destructive actions to higher-level roles or specific owners.
+
+### 3. Contextual UI (Blade Level)
+Utilizes `@can` directives to conditionally render UI elements, ensuring users only see buttons and links for actions they are authorized to perform, providing a clean and intuitive user experience.

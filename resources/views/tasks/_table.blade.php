@@ -51,14 +51,17 @@
                         <div class="flex justify-end items-center space-x-4">
                             <a href="{{ route('tasks.show', $task->id) }}"
                                 class="text-blue-600 hover:underline">View</a>
-                            <a href="{{ route('tasks.edit', $task->id) }}"
-                                class="text-yellow-600 hover:text-yellow-900">Edit</a>
-
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
-                                onsubmit="return confirm('Delete this task?')">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900 font-bold">Delete</button>
-                            </form>
+                            @can('update', $task)
+                                <a href="{{ route('tasks.edit', $task->id) }}"
+                                    class="text-yellow-600 hover:text-yellow-900">Edit</a>
+                            @endcan
+                            @can('delete', $task)
+                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST"
+                                    onsubmit="return confirm('Delete this task?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900 font-bold">Delete</button>
+                                </form>
+                            @endcan
                         </div>
                     </td>
                 </tr>

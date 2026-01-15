@@ -39,7 +39,11 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $this->authorize('create', Project::class);
-        $project = $this->projectService->createProject($request->validated());
+        $data = $request->validated();
+        if (! auth()->user()->isAdmin()) {
+            $data['manager_id'] = auth()->id();
+        }
+        $project = $this->projectService->createProject($data);
         return redirect()->route('projects.index')->with('success', 'Project created!');
     }
 

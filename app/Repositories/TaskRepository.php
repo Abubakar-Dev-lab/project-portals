@@ -13,7 +13,16 @@ class TaskRepository
 
     public function paginate($perPage = 10)
     {
-        return Task::with(['project', 'user'])->paginate($perPage);
+        $user = auth()->user();
+        $query = Task::with(['project', 'user']);
+
+        if ($user->isAdmin()) {
+            return $query->latest()->paginate($perPage);
+        }
+        return $query->where('assigned_to', $user->id)
+            ->orWhereHas('project', function ($q) use ($user) {
+                $q->where('manager_id', $user->id);
+            })->latest()->paginate($perPage);
     }
 
     public function find($id)
