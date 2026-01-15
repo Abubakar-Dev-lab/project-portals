@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ProjectService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Project;
 use App\Services\UserService;
 
 class ProjectController extends Controller
@@ -27,9 +28,9 @@ class ProjectController extends Controller
         return view('projects.create', compact('managers'));
     }
 
-    public function show($id)
+    public function show(Project $project)
     {
-        $project =  $this->projectService->getProjectById($id);
+        $project = $this->projectService->getProjectDetails($project);
         return view('projects.show', compact('project'));
     }
 
@@ -39,24 +40,22 @@ class ProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project created!');
     }
 
-    public function edit($id)
+    public function edit(Project $project)
     {
-        $project =  $this->projectService->getProjectById($id);
         $managers = $this->userService->getUsersForDropdown();
 
         return view('projects.edit', compact('project', 'managers'));
     }
 
-    public function update(UpdateProjectRequest $request, $id)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $data = $request->validated();
-        $project = $this->projectService->updateProject($id, $data);
+        $this->projectService->updateProject($project, $request->validated());
         return redirect()->route('projects.index')->with('success', 'Project Updated Successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        $this->projectService->deleteProject($id);
+        $this->projectService->deleteProject($project);
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');
     }

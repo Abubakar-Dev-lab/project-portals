@@ -21,16 +21,14 @@ class ProjectRepository
         return Project::with(['manager', 'tasks.user'])->findOrFail($id);
     }
 
-    public function update($id, array $data)
+    public function update(Project $project, array $data)
     {
-        $project = $this->find($id);
         $project->update($data);
         return $project;
     }
 
-    public function delete($id)
+    public function delete(Project $project)
     {
-        $project = $this->find($id);
         return $project->delete();
     }
 

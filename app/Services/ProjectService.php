@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Project;
 use App\Repositories\ProjectRepository;
 
 class ProjectService
@@ -24,18 +25,23 @@ class ProjectService
         return $this->projectRepo->find($id);
     }
 
-    public function updateProject($id, array $data)
+    public function updateProject(Project $project, array $data)
     {
-        return $this->projectRepo->update($id, $data);
+        return $this->projectRepo->update($project, $data);
     }
 
-    public function deleteProject($id)
+    public function deleteProject(Project $project)
     {
-        return  $this->projectRepo->delete($id);
+        return  $this->projectRepo->delete($project);
     }
 
     public function getProjectsForDropdown()
     {
         return $this->projectRepo->getDropdownList();
+    }
+
+    public function getProjectDetails(Project $project): Project
+    {
+        return $project->load(['manager', 'tasks.user']);
     }
 }

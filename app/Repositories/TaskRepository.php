@@ -21,16 +21,14 @@ class TaskRepository
         return Task::with(['project', 'user'])->findOrFail($id);
     }
 
-    public function update($id, array $data)
+    public function update(Task $task, array $data)
     {
-        $task = $this->find($id);
         $task->update($data);
         return $task;
     }
 
-    public function delete($id)
+    public function delete(Task $task)
     {
-        $task = $this->find($id);
         return $task->delete();
     }
 }
