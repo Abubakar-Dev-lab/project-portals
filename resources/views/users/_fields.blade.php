@@ -3,7 +3,7 @@
 <x-form-input name="email" label="Email Address" type="email" :value="$user->email" />
 
 <!-- Conditional Field: Only show Roles to Admins -->
-@if(auth()->user()->isAdmin() && isset($roles))
+@if(auth()->user()->isAdmin() && $user->id !== auth()->id())
     <x-form-select
         name="role"
         label="System Role"

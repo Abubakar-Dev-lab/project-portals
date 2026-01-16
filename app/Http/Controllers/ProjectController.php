@@ -46,9 +46,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $this->authorize('update', $project);
-
         $managers = $this->userService->getUsersForDropdown();
-
         return view('projects.edit', compact('project', 'managers'));
     }
 
@@ -63,9 +61,11 @@ class ProjectController extends Controller
     {
         $this->authorize('delete', $project);
         $isDeleted = $this->projectService->deleteProject($project);
+
         if (!$isDeleted) {
             return back()->with('error', 'Cannot delete project: This project still contains tasks. Please delete or reassign the tasks first.');
         }
+
         $this->projectService->deleteProject($project);
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');

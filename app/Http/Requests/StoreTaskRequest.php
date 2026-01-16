@@ -34,7 +34,7 @@ class StoreTaskRequest extends FormRequest
             'assigned_to' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'string|required',
-            'status'      => 'nullable|string|in:todo,in_progress,done', // Specific task statuses
+            'status'      => 'nullable|string|in:todo,in_progress,done',
         ];
     }
 

@@ -29,7 +29,7 @@ class UpdateProfileRequest extends FormRequest
                 'email',
                 Rule::unique('users')->ignore(auth()->id())
             ],
-            'password' => 'nullable|string|min:8|confirmed', // Add this!
+            'password' => 'nullable|string|min:8|confirmed',
 
         ];
     }

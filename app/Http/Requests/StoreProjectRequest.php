@@ -26,7 +26,7 @@ class StoreProjectRequest extends FormRequest
                 'required|exists:users,id' : 'nullable',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'status'      => 'nullable|string|in:pending,active,completed', // Restricted values
+            'status'      => 'nullable|string|in:pending,active,completed',
         ];
     }
 }

@@ -23,17 +23,22 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $allowedRoles = [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_WORKER];
+
+        if (auth()->user()->isSuperAdmin()) {
+            $allowedRoles[] = User::ROLE_SUPER_ADMIN;
+        }
+
         return [
             'name' => 'required|string|max:255',
             'email' => [
                 'required',
                 'email',
-                // This ignores the user currently being edited
                 Rule::unique('users')->ignore($this->route('user'))
             ],
             'role' => [
                 'required',
-                Rule::in([User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_WORKER])
+                Rule::in($allowedRoles)
             ],
             'password' => 'nullable|string|min:8|confirmed',
         ];

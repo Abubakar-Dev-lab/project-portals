@@ -48,31 +48,18 @@ class ProjectService
 
         $user = auth()->user();
 
-        // If Admin, see all projects.
         // If Manager, only see projects I manage.
         // (Workers usually don't see this list because they can't create tasks)
         if ($user->isAdmin()) {
             return $this->projectRepo->getDropdownList();
         }
 
-        return Project::where('manager_id', $user->id)->pluck('title', 'id');
+        return $this->projectRepo->getListByManager($user->id);
     }
 
     public function getProjectDetails(Project $project): Project
     {
         $user = auth()->user();
-
-        return $project->load([
-            'manager',
-            'tasks' => function ($query) use ($user, $project) {
-                $query->when(
-                    !$user->isAdmin() &&
-                        $project->manager_id !== $user->id,
-                    function ($q) use ($user) {
-                        $q->where('assigned_to', $user->id);
-                    }
-                )->with('user');
-            }
-        ]);
+        return $this->projectRepo->loadFilteredTasks($project, $user);
     }
 }

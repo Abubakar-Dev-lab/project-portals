@@ -16,14 +16,17 @@ class TaskRepository
         $user = auth()->user();
         $query = Task::with(['project', 'user']);
 
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->isSuperAdmin()) {
             return $query->latest()->paginate($perPage);
         }
 
         return $query->where(function ($q) use ($user) {
             $q->where('assigned_to', $user->id)
                 ->orWhereHas('project', function ($sub) use ($user) {
-                    $sub->where('manager_id', $user->id);
+                    $sub->where('manager_id', $user->id)
+                        ->orWhereHas('tasks', function ($t) use ($user) {
+                            $t->where('assigned_to', $user->id);
+                        });
                 });
         })->latest()->paginate($perPage);
     }

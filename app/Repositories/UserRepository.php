@@ -8,7 +8,7 @@ class UserRepository
 {
     public function getDropdownList()
     {
-        return User::where('role', '!=', User::ROLE_ADMIN)
+        return User::whereNotIn('role', [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN])
             ->orderBy('name')
             ->pluck('name', 'id');
     }
@@ -40,5 +40,14 @@ class UserRepository
     public function getProjectsCount(User $user)
     {
         return $user->managedProjects()->count();
+    }
+
+    /**
+     * Get all available system roles defined in the Model.
+     */
+    public function getRolesList()
+    {
+        // The Repository handles the interaction with the Model's static helpers
+        return User::getRoles();
     }
 }

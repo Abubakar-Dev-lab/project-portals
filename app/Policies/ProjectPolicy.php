@@ -7,8 +7,6 @@ use App\Models\User;
 
 class ProjectPolicy
 {
-    // Senior Tip: The 'before' method runs first.
-    // If it returns true, the user is granted access immediately.
     public function before(User $user)
     {
         if ($user->isAdmin()) return true;

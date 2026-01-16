@@ -55,4 +55,31 @@ class ProjectRepository
     {
         return $project->tasks()->count();
     }
+
+    // app/Repositories/ProjectRepository.php
+
+    /**
+     * Get projects owned by a specific manager for a dropdown.
+     */
+    public function getListByManager(int $userId)
+    {
+        return Project::where('manager_id', $userId)
+            ->orderBy('title')
+            ->pluck('title', 'id');
+    }
+
+    /**
+     * Load relationships with specific security filters.
+     */
+    public function loadFilteredTasks(Project $project, $user)
+    {
+        return $project->load([
+            'manager',
+            'tasks' => function ($query) use ($user, $project) {
+                $query->when(!$user->isAdmin() && $project->manager_id !== $user->id, function ($q) use ($user) {
+                    $q->where('assigned_to', $user->id);
+                })->with('user');
+            }
+        ]);
+    }
 }

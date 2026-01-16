@@ -62,6 +62,10 @@
                                     <button type="submit" class="text-red-600 hover:text-red-900 font-bold">Delete</button>
                                 </form>
                             @endcan
+                            <!-- Senior UX Hint: If they can see the task but can't touch it -->
+                            @if (auth()->user()->cannot('update', $task) && auth()->user()->cannot('delete', $task))
+                                <span class="text-gray-400 text-xs italic">Teammate Task</span>
+                            @endif
                         </div>
                     </td>
                 </tr>

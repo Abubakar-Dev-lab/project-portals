@@ -28,7 +28,6 @@ class UpdateTaskRequest extends FormRequest
             'project_id' => [
                 'sometimes',
                 'required',
-                // 🛡️ THE SHIELD:
                 // If Admin: Just check if project exists.
                 // If Manager: Check if project exists AND belongs to them.
                 $user->isAdmin()

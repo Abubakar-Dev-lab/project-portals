@@ -19,28 +19,32 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // 2. Get the roles from our Model's static method
-        $roles = $this->userService->getAvailableRoles();
+        $this->authorize('update', $user);
 
+        $roles = $this->userService->getAvailableRoles();
         return view('admin.users.edit', compact('user', 'roles'));
     }
-
-
 
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->userService->updateProfile($user, $request->validated());
-
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
-        // The Service now handles the logic. We just check the result.
+        if ($user->is(auth()->user())) {
+            return back()->with('error', 'Security Block: You cannot delete your own account.');
+        }
+
+        if ($user->isSuperAdmin()) {
+            return back()->with('error', 'Security Block: Super Admins cannot be removed.');
+        }
+
         $deleted = $this->userService->deleteUser($user);
 
         if (!$deleted) {
-            return back()->with('error', 'Action blocked: You cannot delete yourself or a manager with active projects.');
+            return back()->with('error', 'Action blocked:   manager with active projects.');
         }
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');

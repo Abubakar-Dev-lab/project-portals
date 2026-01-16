@@ -36,17 +36,23 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end space-x-3">
-                            <a href="{{ route('admin.users.edit', $user->id) }}"
-                                class="text-yellow-600 hover:underline">Edit</a>
-
+                            @can('update', $user)
+                                <a href="{{ route('admin.users.edit', $user->id) }}"
+                                    class="text-yellow-600 hover:underline">Edit</a>
+                            @endcan
                             <!-- Senior Security Logic: Admin cannot delete themselves -->
-                            @if ($user->id !== auth()->id())
+                            @can('delete', $user)
                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                     onsubmit="return confirm('Delete user?')">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:underline">Delete</button>
                                 </form>
+                            @endcan
+                            <!-- If they can't do either, show a neutral status -->
+                            @if (auth()->user()->cannot('update', $user) && auth()->user()->cannot('delete', $user))
+                                <span class="text-gray-400 text-xs italic">Read Only</span>
                             @endif
+
                         </div>
                     </td>
                 </tr>

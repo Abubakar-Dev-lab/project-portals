@@ -16,12 +16,22 @@ class UserService
 
     public function updateProfile(User $user, array $data)
     {
+        $currentUser = auth()->user();
+        if ($user->isSuperAdmin() && !$currentUser->isSuperAdmin()) {
+            return false;
+        }
+
         if (empty($data['password'])) {
             unset($data['password']);
         }
-        if ($user->is(auth()->user())) {
+
+        if ($user->is($currentUser)) {
             unset($data['role']);
         }
+
+        // if ($user->is(auth()->user())) {
+        //     unset($data['role']);
+        // }
         return $this->userRepo->update($user, $data);
     }
 
@@ -38,15 +48,15 @@ class UserService
     public function getAvailableRoles()
     {
         // The service provides the roles defined in the Model constants
-        return User::getRoles();
+        return $this->userRepo->getRolesList();
     }
 
     public function deleteUser(User $user)
     {
-        // 1. Logic Check: Prevent self-deletion at the service level
-        if ($user->is(auth()->user())) {
+        if ($user->isSuperAdmin() || $user->is(auth()->user())) {
             return false;
         }
+
         // 1. Business Rule: A manager with active projects cannot be deleted
         $projectCount = $this->userRepo->getProjectsCount($user);
 

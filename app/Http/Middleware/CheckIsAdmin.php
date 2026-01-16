@@ -19,7 +19,6 @@ class CheckIsAdmin
             return $next($request);
         }
 
-        // 3. If not an admin, kick them out with a 403 Forbidden error
         abort(403, 'Unauthorized access.');
     }
 }
