@@ -21,13 +21,12 @@ class ProjectRepository
             return $query->latest()->paginate($perPage);
         }
 
-        // if ($user->role === User::ROLE_MANAGER) {
-        //     return $query->where('manager_id', $user->id)->latest()->paginate($perPage);
-        // }
-        return $query->where('manager_id', $user->id)
-            ->whereHas('tasks', function ($q) use ($user) {
-                $q->where('assigned_to', $user->id);
-            })->latest()->paginate($perPage);
+        return $query->where(function ($q) use ($user) {
+            $q->where('manager_id', $user->id)
+                ->orWhereHas('tasks', function ($sub) use ($user) {
+                    $sub->where('assigned_to', $user->id);
+                });
+        })->latest()->paginate($perPage);
     }
 
     public function find($id)
@@ -50,5 +49,10 @@ class ProjectRepository
     {
 
         return Project::orderBy('title')->pluck('title', 'id');
+    }
+
+    public function getTasksCount(Project $project)
+    {
+        return $project->tasks()->count();
     }
 }

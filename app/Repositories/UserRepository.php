@@ -8,7 +8,9 @@ class UserRepository
 {
     public function getDropdownList()
     {
-        return User::orderBy('name')->pluck('name', 'id');
+        return User::where('role', '!=', User::ROLE_ADMIN)
+            ->orderBy('name')
+            ->pluck('name', 'id');
     }
 
     public function create(array $data)

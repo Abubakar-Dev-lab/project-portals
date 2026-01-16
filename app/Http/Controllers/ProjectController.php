@@ -62,6 +62,10 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $this->authorize('delete', $project);
+        $isDeleted = $this->projectService->deleteProject($project);
+        if (!$isDeleted) {
+            return back()->with('error', 'Cannot delete project: This project still contains tasks. Please delete or reassign the tasks first.');
+        }
         $this->projectService->deleteProject($project);
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');

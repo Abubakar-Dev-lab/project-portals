@@ -35,6 +35,11 @@ class ProjectService
 
     public function deleteProject(Project $project)
     {
+        $tasksCount = $this->projectRepo->getTasksCount($project);
+
+        if ($tasksCount > 0) {
+            return false;
+        }
         return  $this->projectRepo->delete($project);
     }
 
