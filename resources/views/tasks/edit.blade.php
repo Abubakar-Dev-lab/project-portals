@@ -11,14 +11,17 @@
             <form action="{{ route('tasks.update', $task->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-
-                <x-form-select name="project_id" label="Project" :options="$projects" :selected="$task->project_id" />
-
+                @if (auth()->user()->isAdmin() || auth()->id() === $task->project->manager_id)
+                    <x-form-select name="project_id" label="Project" :options="$projects" :selected="$task->project_id" />
+                    <x-form-select name="assigned_to" label="Assign to Worker" :options="$users" :selected="$task->assigned_to" />
+                @else
+                    <!-- For Workers, we just show who is assigned and which project it is as plain text -->
+                    <x-detail-row label="Project" :value="$task->project->title" />
+                    <x-detail-row label="Assigned To" :value="$task->user?->name" />
+                @endif
                 <x-form-input name="title" label="Task Title" :value="$task->title" />
 
                 <x-form-textarea name="description" label="Task Details" :value="$task->description" />
-
-                <x-form-select name="assigned_to" label="Assign to Worker" :options="$users" :selected="$task->assigned_to" />
 
                 <x-form-select name="status" label="Status" :options="['todo' => 'To Do', 'in_progress' => 'In Progress', 'done' => 'Done']" :selected="$task->status" />
 

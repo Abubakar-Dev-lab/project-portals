@@ -40,7 +40,17 @@ class ProjectService
 
     public function getProjectsForDropdown()
     {
-        return $this->projectRepo->getDropdownList();
+
+        $user = auth()->user();
+
+        // If Admin, see all projects.
+        // If Manager, only see projects I manage.
+        // (Workers usually don't see this list because they can't create tasks)
+        if ($user->isAdmin()) {
+            return $this->projectRepo->getDropdownList();
+        }
+
+        return Project::where('manager_id', $user->id)->pluck('title', 'id');
     }
 
     public function getProjectDetails(Project $project): Project

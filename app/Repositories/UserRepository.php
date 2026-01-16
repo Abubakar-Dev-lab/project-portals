@@ -37,6 +37,6 @@ class UserRepository
 
     public function getProjectsCount(User $user)
     {
-        return $user->loadCount('managedProjects');
+        return $user->managedProjects()->count();
     }
 }

@@ -19,14 +19,20 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $user->id === $task->project->manager_id ||
-            $user->id === $task->assigned_to;
+        // 1. If I am the manager or the assignee, it's a fast 'Yes' (In-memory check)
+        if ($user->id === $task->assigned_to || $user->id === $task->project->manager_id) {
+            return true;
+        }
+
+        // 2. If I am a teammate, we check the database (1 query)
+        // We only reach this line if it's a "Show" page, so there is no N+1 loop!
+        return $task->project->tasks()->where('assigned_to', $user->id)->exists();
     }
 
     public function create(User $user): bool
     {
         // Only Admins and Managers can create tasks
-        return $user->isAdmin() || $user->role === User::ROLE_MANAGER;
+        return  $user->role === User::ROLE_MANAGER;
     }
 
     /**

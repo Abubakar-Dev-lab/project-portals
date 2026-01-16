@@ -48,6 +48,7 @@ class ProjectRepository
 
     public function getDropdownList()
     {
+
         return Project::orderBy('title')->pluck('title', 'id');
     }
 }
