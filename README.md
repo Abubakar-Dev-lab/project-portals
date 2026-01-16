@@ -173,3 +173,5 @@ Granular permissions are enforced using **Laravel Policies** and **Route Model B
 
 ### 3. Contextual UI (Blade Level)
 Utilizes `@can` directives to conditionally render UI elements, ensuring users only see buttons and links for actions they are authorized to perform, providing a clean and intuitive user experience.
+
+

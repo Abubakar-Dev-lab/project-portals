@@ -57,7 +57,7 @@
                     <a href="{{ route('profile.edit') }}" @class([
                         'transition-colors duration-200',
                         'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'tasks.*'),
+                            'profile.*'),
                         'text-gray-600 hover:text-blue-500' => !request()->routeIs('profile.*'),
                     ])>
                         Profile

@@ -12,6 +12,9 @@ class ProjectService
 
     public function createProject(array $data)
     {
+        if (! auth()->user()->isAdmin()) {
+            $data['manager_id'] = auth()->id();
+        }
         return $this->projectRepo->create($data);
     }
 
@@ -42,6 +45,19 @@ class ProjectService
 
     public function getProjectDetails(Project $project): Project
     {
-        return $project->load(['manager', 'tasks.user']);
+        $user = auth()->user();
+
+        return $project->load([
+            'manager',
+            'tasks' => function ($query) use ($user, $project) {
+                $query->when(
+                    !$user->isAdmin() &&
+                        $project->manager_id !== $user->id,
+                    function ($q) use ($user) {
+                        $q->where('assigned_to', $user->id);
+                    }
+                )->with('user');
+            }
+        ]);
     }
 }

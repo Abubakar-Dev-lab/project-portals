@@ -21,12 +21,13 @@ class ProjectRepository
             return $query->latest()->paginate($perPage);
         }
 
-        if ($user->role === User::ROLE_MANAGER) {
-            return $query->where('manager_id', $user->id)->latest()->paginate($perPage);
-        }
-        return $query->whereHas('tasks', function ($q) use ($user) {
-            $q->where('assigned_to', $user->id);
-        })->latest()->paginate($perPage);
+        // if ($user->role === User::ROLE_MANAGER) {
+        //     return $query->where('manager_id', $user->id)->latest()->paginate($perPage);
+        // }
+        return $query->where('manager_id', $user->id)
+            ->whereHas('tasks', function ($q) use ($user) {
+                $q->where('assigned_to', $user->id);
+            })->latest()->paginate($perPage);
     }
 
     public function find($id)

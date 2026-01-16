@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTaskRequest extends FormRequest
@@ -22,11 +23,25 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_id' => 'required|exists:projects,id',
+            'project_id' => [
+                'required',
+                // Logic: Check if project exists AND the manager_id matches the current user
+                // UNLESS the current user is an Admin
+                auth()->user()->isAdmin()
+                    ? 'exists:projects,id'
+                    : Rule::exists('projects', 'id')->where('manager_id', auth()->id())
+            ],
             'assigned_to' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'string|required',
             'status'      => 'nullable|string|in:todo,in_progress,done', // Specific task statuses
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'project_id.exists' => 'You are not authorized to add tasks to this project.',
         ];
     }
 }

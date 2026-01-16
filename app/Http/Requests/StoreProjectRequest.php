@@ -22,7 +22,8 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'manager_id' => 'required|exists:users,id',
+            'manager_id' => auth()->user()->isAdmin() ?
+                'required|exists:users,id' : 'nullable',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'status'      => 'nullable|string|in:pending,active,completed', // Restricted values

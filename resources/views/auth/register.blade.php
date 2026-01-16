@@ -11,7 +11,7 @@
             <x-form-input name="password_confirmation" type="password" label="Confirm Password" />
             <div class="mt-6">
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+                    class="w-full bg-blue-600 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded transition duration-200">
                     Register
                 </button>
             </div>

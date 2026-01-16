@@ -14,9 +14,12 @@
                 <x-form-input name="title" label="Project Title" placeholder="e.g. Modernizing the Warehouse API" />
 
                 <x-form-textarea name="description" label="Description" placeholder="What is this project about?" />
-
-                <x-form-select name="manager_id" label="Project Manager" :options="$managers" />
-
+                @if (auth()->user()->isAdmin())
+                    <x-form-select name="manager_id" label="Project Manager" :options="$managers" :selected="$project->manager_id ?? ''" />
+                @else
+                    <p class="text-sm text-gray-500 mb-4 italic">Note: You will be assigned as the manager of this project.
+                    </p>
+                @endif
                 <div class="flex items-center justify-end space-x-4 border-t pt-6 mt-6">
                     <a href="{{ route('projects.index') }}" class="text-gray-600 hover:text-gray-900">Cancel</a>
                     <button type="submit"

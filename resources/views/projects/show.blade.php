@@ -8,8 +8,10 @@
                 <h1 class="text-4xl font-extrabold text-gray-900 mt-2">{{ $project->title }}</h1>
             </div>
             <div class="flex space-x-3">
-                <a href="{{ route('projects.edit', $project->id) }}"
-                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-bold shadow transition">Edit</a>
+                @can('update', $project)
+                    <a href="{{ route('projects.edit', $project->id) }}"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-bold shadow transition">Edit</a>
+                @endcan
             </div>
         </div>
 
@@ -32,7 +34,9 @@
         <!-- Reusable Task Table -->
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-2xl font-bold text-gray-800">Project Tasks</h3>
-            <a href="{{ route('tasks.create') }}" class="text-blue-600 hover:underline font-medium">+ Add Task</a>
+            @can('create', App\Models\Task::class)
+                <a href="{{ route('tasks.create') }}" class="text-blue-600 hover:underline font-medium">+ Add Task</a>
+            @endcan
         </div>
 
         <div class="bg-white shadow-md rounded-xl border border-gray-200 overflow-hidden">
