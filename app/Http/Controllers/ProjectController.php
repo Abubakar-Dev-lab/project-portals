@@ -66,7 +66,6 @@ class ProjectController extends Controller
             return back()->with('error', 'Cannot delete project: This project still contains tasks. Please delete or reassign the tasks first.');
         }
 
-        $this->projectService->deleteProject($project);
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');
     }

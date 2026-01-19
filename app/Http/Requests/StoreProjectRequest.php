@@ -23,7 +23,7 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'manager_id' => auth()->user()->isAdmin() ?
-                'required|exists:users,id' : 'nullable',
+                'required|exists:users,id' : 'prohibited',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'status'      => 'nullable|string|in:pending,active,completed',

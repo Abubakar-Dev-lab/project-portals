@@ -24,7 +24,9 @@ class UpdateProjectRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
-            'manager_id' => 'sometimes|required|exists:users,id',
+            'manager_id' => auth()->user()->isAdmin()
+                ? 'sometimes|required|exists:users,id'
+                : 'prohibited',
             'status'      => 'sometimes|required|string|in:pending,active,completed',
         ];
     }

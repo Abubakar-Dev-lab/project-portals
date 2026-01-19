@@ -80,7 +80,7 @@ class User extends Authenticatable
             self::ROLE_WORKER => 'Worker',
             self::ROLE_MANAGER => 'Manager',
             self::ROLE_ADMIN => 'Admin',
-            self::ROLE_SUPER_ADMIN => 'super admin',
+            self::ROLE_SUPER_ADMIN => 'Super Admin',
         ];
     }
 

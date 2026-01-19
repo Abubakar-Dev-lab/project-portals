@@ -18,8 +18,8 @@ class ProfileController extends Controller
 
     public function update(UpdateProfileRequest $request)
     {
-        $userId = auth()->user();
-        $this->userService->updateProfile($userId, $request->validated());
+        $user = auth()->user();
+        $this->userService->updateProfile($user, $request->validated());
         return back()->with('success', 'Profile updated ');
     }
 }

@@ -43,7 +43,6 @@ class UserRepository
      */
     public function getRolesList()
     {
-        // The Repository handles the interaction with the Model's static helpers
         return User::getRoles();
     }
 
