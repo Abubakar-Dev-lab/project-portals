@@ -10,7 +10,7 @@ class TaskPolicy
 {
     public function before(User $user)
     {
-        if ($user->isAdmin()) return true;
+        if ($user->isAdmin() || $user->isSuperAdmin() ) return true;
     }
 
 

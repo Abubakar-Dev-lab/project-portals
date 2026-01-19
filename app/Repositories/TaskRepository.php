@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Task;
+use App\Models\User;
 
 class TaskRepository
 {
@@ -45,5 +46,12 @@ class TaskRepository
     public function delete(Task $task)
     {
         return $task->delete();
+    }
+
+    public function hasPendingTasks(User $user): bool
+    {
+        return Task::where('assigned_to', $user->id)
+            ->whereIn('status', ['todo', 'in_progress'])
+            ->exists();
     }
 }

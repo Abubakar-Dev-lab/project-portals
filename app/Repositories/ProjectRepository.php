@@ -17,7 +17,7 @@ class ProjectRepository
         $user = auth()->user();
         $query = Project::with('manager');
 
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->isSuperAdmin()) {
             return $query->latest()->paginate($perPage);
         }
 
@@ -81,5 +81,12 @@ class ProjectRepository
                 })->with('user');
             }
         ]);
+    }
+
+    public function hasPendingProjects(User $user): bool
+    {
+        return Project::where('manager_id', $user->id)
+            ->whereIn('status', ['pending', 'active'])
+            ->exists();
     }
 }

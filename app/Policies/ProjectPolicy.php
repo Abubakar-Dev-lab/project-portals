@@ -9,7 +9,7 @@ class ProjectPolicy
 {
     public function before(User $user)
     {
-        if ($user->isAdmin()) return true;
+        if ($user->isAdmin() || $user->isSuperAdmin()) return true;
     }
 
     public function view(User $user, Project $project): bool
@@ -23,7 +23,7 @@ class ProjectPolicy
     // Check if user is even allowed to start a project
     public function create(User $user): bool
     {
-        return $user->role === User::ROLE_MANAGER || $user->isAdmin();
+        return $user->role === User::ROLE_MANAGER ;
     }
 
     public function update(User $user, Project $project): bool

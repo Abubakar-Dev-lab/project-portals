@@ -3,11 +3,17 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\ProjectRepository;
 
 class UserService
 {
-    public function __construct(protected UserRepository $userRepo) {}
+    public function __construct(
+        protected UserRepository $userRepo,
+        protected ProjectRepository $projectRepo,
+        protected TaskRepository $taskRepo
+    ) {}
 
     public function getUsersForDropdown()
     {
@@ -54,18 +60,24 @@ class UserService
     public function deleteUser(User $user)
     {
         if ($user->isSuperAdmin() || $user->is(auth()->user())) {
-            return false;
+            return ['status' => 'error', 'message' => 'Security restriction: This account cannot be touched.'];
         }
 
-        // 1. Business Rule: A manager with active projects cannot be deleted
-        $projectCount = $this->userRepo->getProjectsCount($user);
-
-        if ($projectCount > 0) {
-            // We return false or throw an exception to tell the Controller it failed
-            return false;
+        // 2. Ask Librarian: Is this a mistake account?
+        if (!$this->userRepo->hasHistory($user)) {
+            $this->userRepo->physicalDelete($user);
+            return ['status' => 'success', 'message' => 'Account was a mistake and has been wiped.'];
         }
 
-        // 2. If count is 0, proceed with deletion
-        return $this->userRepo->delete($user);
+        $hasProjects = $this->projectRepo->hasPendingProjects($user);
+        $hasTasks = $this->taskRepo->hasPendingTasks($user);
+
+        if ($hasProjects || $hasTasks) {
+            return ['status' => 'error', 'message' => 'User has unfinished work(Project or Task).'];
+        }
+
+        // 4. Decision: If they have history but no pending work, deactivate them.
+        $this->userRepo->update($user, ['is_active' => false]);
+        return ['status' => 'success', 'message' => 'User deactivated to preserve historical records.'];
     }
 }

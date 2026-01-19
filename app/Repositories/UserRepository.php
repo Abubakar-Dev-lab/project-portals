@@ -8,7 +8,8 @@ class UserRepository
 {
     public function getDropdownList()
     {
-        return User::whereNotIn('role', [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN])
+        return User::active()
+            ->whereNotIn('role', [User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN])
             ->orderBy('name')
             ->pluck('name', 'id');
     }
@@ -39,7 +40,8 @@ class UserRepository
 
     public function getProjectsCount(User $user)
     {
-        return $user->managedProjects()->count();
+        return $user->managedProjects()->withTrashed()->exists()
+            || $user->tasks()->withTrashed()->exists();
     }
 
     /**
@@ -49,5 +51,24 @@ class UserRepository
     {
         // The Repository handles the interaction with the Model's static helpers
         return User::getRoles();
+    }
+
+    // app/Repositories/UserRepository.php
+
+    /**
+     * Physically remove a user record from the database forever.
+     */
+
+
+    public function hasHistory(User $user): bool
+    {
+        return $user->managedProjects()->withTrashed()->exist()
+            || $user->tasks()->withTrashed()->exists();
+    }
+
+
+    public function physicalDelete(User $user)
+    {
+        return $user->forceDelete();
     }
 }

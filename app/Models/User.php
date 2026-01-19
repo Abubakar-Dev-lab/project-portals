@@ -26,7 +26,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'is_active'
     ];
 
     /**
@@ -81,5 +82,10 @@ class User extends Authenticatable
             self::ROLE_ADMIN => 'Admin',
             self::ROLE_SUPER_ADMIN => 'super admin',
         ];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }
