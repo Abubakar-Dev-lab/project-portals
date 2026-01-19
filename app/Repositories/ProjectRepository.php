@@ -56,7 +56,6 @@ class ProjectRepository
         return $project->tasks()->count();
     }
 
-    // app/Repositories/ProjectRepository.php
 
     /**
      * Get projects owned by a specific manager for a dropdown.

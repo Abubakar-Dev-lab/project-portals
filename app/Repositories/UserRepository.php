@@ -38,12 +38,6 @@ class UserRepository
         return $user->delete();
     }
 
-    public function getProjectsCount(User $user)
-    {
-        return $user->managedProjects()->withTrashed()->exists()
-            || $user->tasks()->withTrashed()->exists();
-    }
-
     /**
      * Get all available system roles defined in the Model.
      */
@@ -53,16 +47,9 @@ class UserRepository
         return User::getRoles();
     }
 
-    // app/Repositories/UserRepository.php
-
-    /**
-     * Physically remove a user record from the database forever.
-     */
-
-
     public function hasHistory(User $user): bool
     {
-        return $user->managedProjects()->withTrashed()->exist()
+        return $user->managedProjects()->withTrashed()->exists()
             || $user->tasks()->withTrashed()->exists();
     }
 

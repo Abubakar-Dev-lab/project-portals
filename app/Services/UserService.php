@@ -69,15 +69,20 @@ class UserService
             return ['status' => 'success', 'message' => 'Account was a mistake and has been wiped.'];
         }
 
-        $hasProjects = $this->projectRepo->hasPendingProjects($user);
-        $hasTasks = $this->taskRepo->hasPendingTasks($user);
+        $hasUnfinishedProjects = $this->projectRepo->hasPendingProjects($user);
+        $hasUnfinishedTasks = $this->taskRepo->hasPendingTasksForUser($user);
 
-        if ($hasProjects || $hasTasks) {
+        if ($hasUnfinishedProjects || $hasUnfinishedTasks) {
             return ['status' => 'error', 'message' => 'User has unfinished work(Project or Task).'];
         }
 
         // 4. Decision: If they have history but no pending work, deactivate them.
         $this->userRepo->update($user, ['is_active' => false]);
         return ['status' => 'success', 'message' => 'User deactivated to preserve historical records.'];
+    }
+
+    public function activateUser(User $user)
+    {
+        return $this->userRepo->update($user, ['is_active' => true]);
     }
 }

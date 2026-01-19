@@ -41,12 +41,21 @@ class UserController extends Controller
             return back()->with('error', 'Security Block: Super Admins cannot be removed.');
         }
 
-        $deleted = $this->userService->deleteUser($user);
+        $result = $this->userService->deleteUser($user);
 
-        if (!$deleted) {
-            return back()->with('error', 'Action blocked:   manager with active projects.');
+        if ($result['status'] === 'error') {
+            return back()->with('error', $result['message']);
         }
 
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('admin.users.index')->with('success', $result['message']);
+    }
+
+    public function activate(User $user)
+    {
+        // 1. The Controller asks the Service to handle the logic
+        $this->userService->activateUser($user);
+
+        // 2. Redirect back with a success message
+        return back()->with('success', 'User account has been reactivated.');
     }
 }

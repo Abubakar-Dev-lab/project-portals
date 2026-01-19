@@ -4,11 +4,16 @@ namespace App\Services;
 
 use App\Models\Project;
 use App\Repositories\ProjectRepository;
+use App\Repositories\TaskRepository;
 
 class ProjectService
 {
 
-    public function __construct(protected ProjectRepository $projectRepo) {}
+    public function __construct(
+        protected ProjectRepository $projectRepo,
+        protected TaskRepository $taskRepo,
+
+    ) {}
 
     public function createProject(array $data)
     {
@@ -35,9 +40,10 @@ class ProjectService
 
     public function deleteProject(Project $project)
     {
-        $tasksCount = $this->projectRepo->getTasksCount($project);
+        $hasActiveWork = $this->taskRepo->hasPendingTasksInProject($project->id);
 
-        if ($tasksCount > 0) {
+        if ($hasActiveWork) {
+            // We block the archive action
             return false;
         }
         return  $this->projectRepo->delete($project);

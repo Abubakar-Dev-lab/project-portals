@@ -48,9 +48,16 @@ class TaskRepository
         return $task->delete();
     }
 
-    public function hasPendingTasks(User $user): bool
+    public function hasPendingTasksForUser(User $user): bool
     {
         return Task::where('assigned_to', $user->id)
+            ->whereIn('status', ['todo', 'in_progress'])
+            ->exists();
+    }
+
+    public function hasPendingTasksInProject(int $projectId): bool
+    {
+        return Task::where('project_id', $projectId)
             ->whereIn('status', ['todo', 'in_progress'])
             ->exists();
     }

@@ -42,11 +42,31 @@
                             @endcan
                             <!-- Senior Security Logic: Admin cannot delete themselves -->
                             @can('delete', $user)
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                    onsubmit="return confirm('Delete user?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                                </form>
+                                @if ($user->is_active)
+                                    @php
+                                        // Logic to decide UI labels based on history
+                                        // We use the counts loaded in the Repository
+                                        $hasHistory = $user->managed_projects_count > 0 || $user->tasks_count > 0;
+                                        $label = $hasHistory ? 'Deactivate' : 'Remove';
+                                        $confirmMessage = $hasHistory
+                                            ? 'This user has work history. Deactivating will block login but keep records. Proceed?'
+                                            : 'This user has no history. This will permanently delete the record. Proceed?';
+                                    @endphp
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                        onsubmit="return confirm('{{ $confirmMessage }}')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline "
+                                            onclick="return confirm('Deactivate this user?')">{{ $label }}</button>
+                                    </form>
+                                @else
+                                    <!-- If inactive, show Activate -->
+                                    <form action="{{ route('admin.users.activate', $user->id) }}" method="POST">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" class="text-green-600 underline">
+                                            Activate
+                                        </button>
+                                    </form>
+                                @endif
                             @endcan
                             <!-- If they can't do either, show a neutral status -->
                             @if (auth()->user()->cannot('update', $user) && auth()->user()->cannot('delete', $user))
