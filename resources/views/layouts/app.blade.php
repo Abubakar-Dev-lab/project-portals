@@ -53,6 +53,15 @@
                         ])>
                             User Management
                         </a>
+                        @if (auth()->user()->isAdmin())
+                            <a href="{{ route('admin.trash.index') }}" @class([
+                                'px-4 transition duration-200',
+                                'text-blue-600 font-bold' => request()->routeIs('admin.trash.*'),
+                                'text-gray-600 hover:text-blue-600' => !request()->routeIs('admin.trash.*'),
+                            ])>
+                                Trash Bin
+                            </a>
+                        @endif
                     @endif
                     <a href="{{ route('profile.edit') }}" @class([
                         'transition-colors duration-200',
@@ -83,8 +92,10 @@
                         Register
                     </a>
                 @endguest
+
             </div>
         </div>
+
     </nav>
 
     <!-- Main Content Area -->

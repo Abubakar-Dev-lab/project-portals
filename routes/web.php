@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return redirect()->route('projects.index');
@@ -56,4 +57,17 @@ Route::controller(TaskController::class)->middleware(['auth'])->prefix('tasks')-
 Route::prefix('profile')->middleware('auth')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
     Route::put('/', [ProfileController::class, 'update'])->name('update');
+});
+
+
+Route::prefix('trash')->middleware(['auth', 'admin'])->name('trash.')->group(function () {
+    Route::get('/', [TrashController::class, 'index'])->name('index');
+
+    // Project Actions
+    Route::patch('/projects/{id}/restore', [TrashController::class, 'restoreProject'])->name('projects.restore');
+    Route::delete('/projects/{id}/force', [TrashController::class, 'wipeProject'])->name('projects.wipe');
+
+    // Task Actions
+    Route::patch('/tasks/{id}/restore', [TrashController::class, 'restoreTask'])->name('tasks.restore');
+    Route::delete('/tasks/{id}/force', [TrashController::class, 'wipeTask'])->name('tasks.wipe');
 });

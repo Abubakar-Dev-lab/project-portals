@@ -88,4 +88,28 @@ class ProjectRepository
             ->whereIn('status', ['pending', 'active'])
             ->exists();
     }
+
+    public function getTrashed($perPage = 10)
+    {
+        // onlyTrashed() filters the query to ONLY show items in the bin
+        return Project::onlyTrashed()
+            ->with('manager') // Still eager load to avoid N+1
+            ->latest('deleted_at') // Show recently deleted items first
+            ->paginate($perPage);
+    }
+
+    public function findTrashed($id)
+    {
+        // onlyTrashed() ensures we don't accidentally find an active project
+        return Project::onlyTrashed()->findOrFail($id);
+    }
+
+    public function restore(Project $project)
+    {
+        return $project->restore();
+    }
+    public function forceDelete(Project $project)
+    {
+        return $project->forceDelete();
+    }
 }

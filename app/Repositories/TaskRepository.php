@@ -61,4 +61,27 @@ class TaskRepository
             ->whereIn('status', ['todo', 'in_progress'])
             ->exists();
     }
+
+    public function getTrashed($perPage = 10)
+    {
+        return Task::onlyTrashed()
+            ->with(['project', 'user']) // Crucial for context in the Trash view
+            ->latest('deleted_at')
+            ->paginate($perPage);
+    }
+
+    public function findTrashed($id)
+    {
+        return Task::onlyTrashed()->findOrFail($id);
+    }
+
+    public function restore(Task $task)
+    {
+        return $task->restore();
+    }
+
+    public function forceDelete(Task $task)
+    {
+        return $task->forceDelete();
+    }
 }
