@@ -1,15 +1,51 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\TrashController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Profile\ProfileController;
 
-// Set a homepage
 Route::get('/', function () {
     return redirect()->route('projects.index');
 });
 
-Route::controller(ProjectController::class)->prefix('projects')->name('projects.')->group(function () {
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    // ADD THIS LINE:
+    Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
+
+    Route::prefix('trash')->name('trash.')->group(function () {
+    Route::get('/', [TrashController::class, 'index'])->name('index');
+
+    // Project Actions
+    Route::patch('/projects/{id}/restore', [TrashController::class, 'restoreProject'])->name('projects.restore');
+    Route::delete('/projects/{id}/force', [TrashController::class, 'wipeProject'])->name('projects.wipe');
+
+    // Task Actions
+    Route::patch('/tasks/{id}/restore', [TrashController::class, 'restoreTask'])->name('tasks.restore');
+    Route::delete('/tasks/{id}/force', [TrashController::class, 'wipeTask'])->name('tasks.wipe');
+});
+});
+
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
+
+Route::controller(ProjectController::class)->middleware(['auth'])->prefix('projects')->name('projects.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
     Route::post('/', 'store')->name('store');
@@ -19,7 +55,7 @@ Route::controller(ProjectController::class)->prefix('projects')->name('projects.
     Route::delete('/{project}', 'destroy')->name('destroy');
 });
 
-Route::controller(TaskController::class)->prefix('tasks')->name('tasks.')->group(function () {
+Route::controller(TaskController::class)->middleware(['auth'])->prefix('tasks')->name('tasks.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
     Route::post('/', 'store')->name('store');
@@ -28,3 +64,12 @@ Route::controller(TaskController::class)->prefix('tasks')->name('tasks.')->group
     Route::put('/{task}', 'update')->name('update');
     Route::delete('/{task}', 'destroy')->name('destroy');
 });
+
+
+Route::prefix('profile')->middleware('auth')->name('profile.')->group(function () {
+    Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+    Route::put('/', [ProfileController::class, 'update'])->name('update');
+});
+
+
+

@@ -12,6 +12,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    const ROLE_SUPER_ADMIN = 'super_admin';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_WORKER = 'worker';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +26,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'is_active'
     ];
 
     /**
@@ -54,6 +61,31 @@ class User extends Authenticatable
 
     public function tasks()
     {
-        return $this->hasMany(Task::class,'assigned_to');
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === self::ROLE_SUPER_ADMIN;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, [self::ROLE_SUPER_ADMIN, self::ROLE_ADMIN]);
+    }
+
+    public static function getRoles(): array
+    {
+        return [
+            self::ROLE_WORKER => 'Worker',
+            self::ROLE_MANAGER => 'Manager',
+            self::ROLE_ADMIN => 'Admin',
+            self::ROLE_SUPER_ADMIN => 'Super Admin',
+        ];
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }

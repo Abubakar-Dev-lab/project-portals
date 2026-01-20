@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Services\ProjectService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\User;
+use App\Models\Project;
+use App\Services\UserService;
 
 class ProjectController extends Controller
 {
-    public function __construct(protected ProjectService $projectService) {}
+    public function __construct(
+        protected ProjectService $projectService,
+        protected UserService $userService,
+
+    ) {}
 
     public function index()
     {
@@ -19,40 +24,48 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $managers = User::pluck('name', 'id');
+        $this->authorize('create', Project::class);
+        $managers = $this->userService->getUsersForDropdown();
         return view('projects.create', compact('managers'));
     }
 
-    public function show($id)
+    public function show(Project $project)
     {
-        $project =  $this->projectService->getProjectById($id);
+        $this->authorize('view', $project);
+        $project = $this->projectService->getProjectDetails($project);
         return view('projects.show', compact('project'));
     }
 
     public function store(StoreProjectRequest $request)
     {
+        $this->authorize('create', Project::class);
         $project = $this->projectService->createProject($request->validated());
         return redirect()->route('projects.index')->with('success', 'Project created!');
     }
 
-    public function edit($id)
+    public function edit(Project $project)
     {
-        $project =  $this->projectService->getProjectById($id);
-        $managers = User::pluck('name', 'id');
-
-        return view('projects.edit', compact('project','managers'));
+        $this->authorize('update', $project);
+        $managers = $this->userService->getUsersForDropdown();
+        return view('projects.edit', compact('project', 'managers'));
     }
 
-    public function update(UpdateProjectRequest $request, $id)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $data = $request->validated();
-        $project = $this->projectService->updateProject($id, $data);
+        $this->authorize('update', $project);
+        $this->projectService->updateProject($project, $request->validated());
         return redirect()->route('projects.index')->with('success', 'Project Updated Successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        $this->projectService->deleteProject($id);
+        $this->authorize('delete', $project);
+        $isDeleted = $this->projectService->deleteProject($project);
+
+        if (!$isDeleted) {
+            return back()->with('error', 'Cannot delete project: This project still contains tasks. Please delete or reassign the tasks first.');
+        }
+
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully!');
     }

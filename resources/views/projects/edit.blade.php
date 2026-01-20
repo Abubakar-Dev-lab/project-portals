@@ -15,9 +15,12 @@
                 <x-form-input name="title" label="Project Title" :value="$project->title" />
 
                 <x-form-textarea name="description" label="Description" :value="$project->description" />
-
-                <x-form-select name="manager_id" label="Project Manager" :options="$managers" :selected="$project->manager_id" />
-
+                @if (auth()->user()->isAdmin())
+                    <x-form-select name="manager_id" label="Project Manager" :options="$managers" :selected="$project->manager_id ?? ''" />
+                @else
+                    <p class="text-sm text-gray-500 mb-4 italic">Note: You are the assigned  manager of this project.
+                    </p>
+                @endif
                 <x-form-select name="status" label="Project Status" :options="['pending' => 'Pending', 'active' => 'Active', 'completed' => 'Completed']" :selected="$project->status" />
 
                 <div class="flex items-center justify-end space-x-4 border-t pt-6 mt-6">

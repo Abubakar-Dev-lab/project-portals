@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\Project;
+use App\Models\User;
+
+class ProjectPolicy
+{
+    public function before(User $user)
+    {
+        if ($user->isAdmin() || $user->isSuperAdmin()) return true;
+    }
+
+    public function view(User $user, Project $project): bool
+    {
+        // A Manager can see it if they own it.
+        // A Worker can see it if they have a task inside it.
+        return $user->id === $project->manager_id ||
+            $project->tasks()->where('assigned_to', $user->id)->exists();
+    }
+
+    // Check if user is even allowed to start a project
+    public function create(User $user): bool
+    {
+        return $user->role === User::ROLE_MANAGER ;
+    }
+
+    public function update(User $user, Project $project): bool
+    {
+        // Only the manager who owns the project can update it
+        return $user->id === $project->manager_id;
+    }
+
+    public function delete(User $user, Project $project): bool
+    {
+        return $user->id === $project->manager_id;
+    }
+}

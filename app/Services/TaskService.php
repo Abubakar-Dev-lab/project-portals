@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Task;
 use App\Repositories\TaskRepository;
 
 class TaskService
 {
 
     public function __construct(protected TaskRepository $taskRepo) {}
-
+    //
     public function createTask(array $data)
     {
         return $this->taskRepo->create($data);
     }
-
+    //
     public function getAllTasks()
     {
         return $this->taskRepo->paginate();
@@ -23,14 +24,19 @@ class TaskService
     {
         return $this->taskRepo->find($id);
     }
-
-    public function updateTask($id, array $data)
+    //
+    public function updateTask(Task $task, array $data)
     {
-        return $this->taskRepo->update($id, $data);
+        return $this->taskRepo->update($task, $data);
+    }
+    //
+    public function deleteTask(Task $task)
+    {
+        return  $this->taskRepo->delete($task);
     }
 
-    public function deleteTask($id)
+    public function getTaskDetails(Task $task): Task
     {
-        return  $this->taskRepo->delete($id);
+        return $task->load(['project', 'user']);
     }
 }
