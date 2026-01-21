@@ -1,0 +1,41 @@
+<div
+    x-data="{
+        show: false,
+        message: '',
+        project: '',
+        init() {
+            // 1. Listen to the Private Channel belonging to the logged-in user
+            // Laravel uses a standard naming: App.Models.User.ID
+            window.Echo.private('App.Models.User.{{ auth()->id() }}')
+                .notification((notification) => {
+                    // 2. When a notification arrives, fill the data and show the toast
+                    this.message = notification.task_name;
+                    this.project = notification.project;
+                    this.show = true;
+
+                    // 3. Auto-hide after 5 seconds
+                    setTimeout(() => { this.show = false }, 5000);
+                });
+        }
+    }"
+    x-show="show"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform translate-y-2"
+    x-transition:enter-end="opacity-100 transform translate-y-0"
+    class="fixed bottom-5 right-5 z-50 max-w-sm w-full bg-white border-l-4 border-blue-600 shadow-2xl rounded-lg p-4 pointer-events-auto"
+    style="display: none;"
+>
+    <div class="flex items-start">
+        <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+        </div>
+        <div class="ml-3">
+            <p class="text-sm font-bold text-gray-900">New Task Assigned!</p>
+            <p class="text-sm text-gray-600" x-text="'Task: ' + message"></p>
+            <p class="text-xs text-gray-400 mt-1" x-text="'Project: ' + project"></p>
+        </div>
+        <button @click="show = false" class="ml-auto text-gray-400 hover:text-gray-900">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"></path></svg>
+        </button>
+    </div>
+</div>
