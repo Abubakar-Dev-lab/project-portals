@@ -42,9 +42,14 @@
                 @endauth
 
                 @guest
-                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 font-medium">Login</a>
-                    <a href="{{ route('register') }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">Register</a>
+                    <a href="{{ route('login') }}" @class([
+                        'text-blue-600 font-bold' => request()->routeIs('login'),
+                        'text-gray-600' => !request()->routeIs('login'),
+                    ])>Login</a>
+                   <a href="{{ route('register') }}" @class([
+                        'text-blue-600 font-bold' => request()->routeIs('register'),
+                        'text-gray-600' => !request()->routeIs('register'),
+                    ])>Register</a>
                 @endguest
             </div>
         </div>

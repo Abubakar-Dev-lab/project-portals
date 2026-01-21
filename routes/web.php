@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return redirect()->route('projects.index');
@@ -68,8 +69,5 @@ Route::prefix('profile')->middleware('auth')->name('profile.')->group(function (
     Route::put('/', [ProfileController::class, 'update'])->name('update');
 });
 
-// 1. Make sure to import the controller at the top of the file
-use App\Http\Controllers\NotificationController;
 
-// 2. Add this inside your Route::middleware('auth')->group(...) block
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');
