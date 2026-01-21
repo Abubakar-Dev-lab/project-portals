@@ -13,6 +13,7 @@ class TaskObserver
     public function created(Task $task): void
     {
         if ($task->assigned_to) {
+            $task->load('project');
             $task->user->notify(new TaskAssignedNotification($task));
         }
     }
@@ -23,8 +24,8 @@ class TaskObserver
     public function updated(Task $task): void
     {
         if ($task->wasChanged('assigned_to') && $task->assigned_to) {
+            $task->load('project');
             $task->user->notify(new TaskAssignedNotification($task));
         }
     }
-
 }

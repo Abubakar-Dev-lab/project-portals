@@ -67,3 +67,9 @@ Route::prefix('profile')->middleware('auth')->name('profile.')->group(function (
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
     Route::put('/', [ProfileController::class, 'update'])->name('update');
 });
+
+// 1. Make sure to import the controller at the top of the file
+use App\Http\Controllers\NotificationController;
+
+// 2. Add this inside your Route::middleware('auth')->group(...) block
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');

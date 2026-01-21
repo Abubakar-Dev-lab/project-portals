@@ -18,7 +18,6 @@
 
     <!-- Navigation Bar -->
     <nav class="bg-white border-b border-gray-200 py-4 mb-8 shadow-sm">
-        <!-- The container mx-auto px-6 ensures the nav aligns perfectly with the content below -->
         <div class="container mx-auto px-6 flex justify-between items-center">
 
             <!-- Brand / Logo -->
@@ -26,54 +25,11 @@
                 DevPortal
             </a>
 
-            <!-- Navigation Links -->
+            <!-- Right Side Navigation -->
             <div class="flex items-center space-x-8">
                 @auth
-                    <!-- Links visible only to Authenticated Users -->
-                    <a href="{{ route('projects.index') }}" @class([
-                        'transition-colors duration-200',
-                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'projects.*'),
-                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('projects.*'),
-                    ])>
-                        Projects
-                    </a>
-
-                    <a href="{{ route('tasks.index') }}" @class([
-                        'transition-colors duration-200',
-                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'tasks.*'),
-                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('tasks.*'),
-                    ])>
-                        Tasks
-                    </a>
-                    @if (auth()->user()->isAdmin())
-                        <a href="{{ route('admin.users.index') }}" @class([
-                            'px-4 transition',
-                            'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                                'admin.users.*'),
-                            'text-gray-600 hover:text-blue-500' => !request()->routeIs('admin.users.*'),
-                        ])>
-                            User Management
-                        </a>
-                        @if (auth()->user()->isAdmin())
-                            <a href="{{ route('admin.trash.index') }}" @class([
-                                'px-4 transition duration-200',
-                                'text-blue-600 font-bold' => request()->routeIs('admin.trash.*'),
-                                'text-gray-600 hover:text-blue-600' => !request()->routeIs('admin.trash.*'),
-                            ])>
-                                Trash Bin
-                            </a>
-                        @endif
-                    @endif
-                    <a href="{{ route('profile.edit') }}" @class([
-                        'transition-colors duration-200',
-                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'profile.*'),
-                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('profile.*'),
-                    ])>
-                        Profile
-                    </a>
+                    <!-- 🟢 THE SENIOR WAY: Use the partial for all links (including the Bell) -->
+                    @include('layouts._nav-links')
 
                     <!-- Secure Logout Form -->
                     <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -86,36 +42,12 @@
                 @endauth
 
                 @guest
-                    <!-- Links visible only to Guests -->
-                    {{-- <a href="{{ route('login') }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200 shadow-sm">
-                        Login
-                    </a> --}}
-                    <a href="{{ route('login') }}" @class([
-                        'transition-colors duration-200',
-                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'login'),
-                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('login'),
-                    ])>
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}" @class([
-                        'transition-colors duration-200',
-                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
-                            'register'),
-                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('register'),
-                    ])>
-                        Register
-                    </a>
-                    {{-- <a href="{{ route('register') }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200 shadow-sm">
-                        Register
-                    </a> --}}
+                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 font-medium">Login</a>
+                    <a href="{{ route('register') }}"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">Register</a>
                 @endguest
-
             </div>
         </div>
-
     </nav>
 
     <!-- Main Content Area -->
