@@ -126,7 +126,7 @@ N+1 Prevention: Standardized use of with() and load() across all Repositories an
 Memory Management: Replacing all() with paginate() and pluck() to ensure the server-side memory footprint remains small regardless of database size.
 Subquery Counting: Utilizing withCount() to fetch relationship statistics via SQL subqueries instead of loading full collections.
 
-
+Module : Real time notification
 
 # Migration and Seeding
 # This creates the Super Admin (super@admin.com / password)
