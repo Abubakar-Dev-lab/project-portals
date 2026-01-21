@@ -85,8 +85,8 @@
     </table>
 
     @if ($users->hasPages())
-        <div class="p-4 border-t bg-gray-50">
-            {{ $users->links() }}
+        <div class="mt-6 bg-white p-4 rounded-xl shadow-sm border border-blue-100">
+             {{ $users->links() }}
         </div>
     @endif
 </div>
