@@ -52,10 +52,7 @@ class UserController extends Controller
 
     public function activate(User $user)
     {
-        // 1. The Controller asks the Service to handle the logic
         $this->userService->activateUser($user);
-
-        // 2. Redirect back with a success message
         return back()->with('success', 'User account has been reactivated.');
     }
 }

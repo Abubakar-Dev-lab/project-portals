@@ -14,7 +14,6 @@ Route::get('/', function () {
     return redirect()->route('projects.index');
 });
 
-
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
@@ -27,20 +26,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-    // ADD THIS LINE:
     Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
 
     Route::prefix('trash')->name('trash.')->group(function () {
-    Route::get('/', [TrashController::class, 'index'])->name('index');
+        Route::get('/', [TrashController::class, 'index'])->name('index');
 
-    // Project Actions
-    Route::patch('/projects/{id}/restore', [TrashController::class, 'restoreProject'])->name('projects.restore');
-    Route::delete('/projects/{id}/force', [TrashController::class, 'wipeProject'])->name('projects.wipe');
+        // Project Actions
+        Route::patch('/projects/{id}/restore', [TrashController::class, 'restoreProject'])->name('projects.restore');
+        Route::delete('/projects/{id}/force', [TrashController::class, 'wipeProject'])->name('projects.wipe');
 
-    // Task Actions
-    Route::patch('/tasks/{id}/restore', [TrashController::class, 'restoreTask'])->name('tasks.restore');
-    Route::delete('/tasks/{id}/force', [TrashController::class, 'wipeTask'])->name('tasks.wipe');
-});
+        // Task Actions
+        Route::patch('/tasks/{id}/restore', [TrashController::class, 'restoreTask'])->name('tasks.restore');
+        Route::delete('/tasks/{id}/force', [TrashController::class, 'wipeTask'])->name('tasks.wipe');
+    });
 });
 
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
@@ -65,11 +63,7 @@ Route::controller(TaskController::class)->middleware(['auth'])->prefix('tasks')-
     Route::delete('/{task}', 'destroy')->name('destroy');
 });
 
-
 Route::prefix('profile')->middleware('auth')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
     Route::put('/', [ProfileController::class, 'update'])->name('update');
 });
-
-
-

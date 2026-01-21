@@ -28,8 +28,6 @@ class UpdateTaskRequest extends FormRequest
             'project_id' => [
                 'sometimes',
                 'required',
-                // If Admin: Just check if project exists.
-                // If Manager: Check if project exists AND belongs to them.
                 $user->isAdmin()
                     ? 'exists:projects,id'
                     : Rule::exists('projects', 'id')->where('manager_id', $user->id)

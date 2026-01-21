@@ -13,22 +13,64 @@ DBeaver mysql
 Module 2: Database Schema & Relational Logic
 We didn't just create tables; we created a Relational Ecosystem designed for data integrity.
 1. Tables & Columns
+
 users:
 role: Enum (worker, manager, admin, super_admin).
 is_active: Boolean (Default: true) – Used for account deactivation.
+
 projects:
 manager_id: Foreign key (Linked to users.id).
 status: Enum (pending, active, completed).
 deleted_at: Timestamp (Soft Delete support).
+
 tasks:
 project_id: Foreign key (Linked to projects.id).
 assigned_to: Foreign key (Linked to users.id).
 status: Enum (todo, in_progress, done).
 deleted_at: Timestamp (Soft Delete support).
+
 2. Integrity Rules (The "Real-World" Locks)
 Project ➡️ Task: restrictOnDelete(). A Project physically cannot be wiped if it contains tasks. This prevents work history from disappearing.
 User ➡️ Project: restrictOnDelete(). A User cannot be deleted if they are currently the manager of a project.
 User ➡️ Task: restrictOnDelete() on assigned_to.
+
+erDiagram
+    USERS ||--o{ PROJECTS : "manages"
+    USERS ||--o{ TASKS : "assigned_to"
+    PROJECTS ||--o{ TASKS : "contains"
+
+    USERS {
+        bigint id PK
+        string name
+        string email
+        enum role "worker, manager, admin, super_admin"
+        boolean is_active
+        timestamp email_verified_at
+        string password
+        string remember_token
+        timestamps created_at_updated_at
+    }
+
+    PROJECTS {
+        bigint id PK
+        bigint manager_id FK "users.id"
+        string title
+        text description
+        string status "pending, active, completed"
+        timestamp deleted_at "SoftDelete"
+        timestamps created_at_updated_at
+    }
+
+    TASKS {
+        bigint id PK
+        bigint project_id FK "projects.id"
+        bigint assigned_to FK "users.id"
+        string title
+        text description
+        string status "todo, in_progress, done"
+        timestamp deleted_at "SoftDelete"
+        timestamps created_at_updated_at
+    }
 
 Module 3: Architectural Patterns
 This is the "Engine" of the project. We moved away from standard Laravel "fat" controllers.
