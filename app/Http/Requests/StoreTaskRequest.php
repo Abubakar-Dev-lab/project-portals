@@ -25,8 +25,6 @@ class StoreTaskRequest extends FormRequest
         return [
             'project_id' => [
                 'required',
-                // Logic: Check if project exists AND the manager_id matches the current user
-                // UNLESS the current user is an Admin
                 auth()->user()->isAdmin()
                     ? 'exists:projects,id'
                     : Rule::exists('projects', 'id')->where('manager_id', auth()->id())

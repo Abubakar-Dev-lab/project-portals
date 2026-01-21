@@ -43,7 +43,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end items-center space-x-4">
                             @if ($isTrash)
-                                <!-- 🛡️ TRASH MODE: Only visible to Admins/Super Admins -->
+                                <!-- TRASH MODE: Only visible to Admins/Super Admins -->
 
                                 <!-- Restore Button -->
                                 <form action="{{ route('admin.trash.projects.restore', $project->id) }}" method="POST">
@@ -57,7 +57,7 @@
 
                                 <!-- Wipe Forever Button -->
                                 <form action="{{ route('admin.trash.projects.wipe', $project->id) }}" method="POST"
-                                    onsubmit="return confirm('🚨 CRITICAL: This will permanently delete this project and ALL its tasks. This cannot be undone. Proceed?')">
+                                    onsubmit="return confirm('CRITICAL: This will permanently delete this project and ALL its tasks. This cannot be undone. Proceed?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900 font-bold transition">
@@ -65,7 +65,7 @@
                                     </button>
                                 </form>
                             @else
-                                <!-- 🟢 ACTIVE MODE: Standard User Actions -->
+                                <!--  ACTIVE MODE: Standard User Actions -->
                                 <a href="{{ route('projects.show', $project->id) }}"
                                     class="text-blue-600 hover:text-blue-900">View</a>
 

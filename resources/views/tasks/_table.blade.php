@@ -51,7 +51,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex justify-end items-center space-x-4">
                             @if ($isTrash)
-                                <!-- 🛡️ TRASH MODE ACTIONS -->
+                                <!-- TRASH MODE ACTIONS -->
 
                                 <!-- Restore Task Button -->
                                 <form action="{{ route('admin.trash.tasks.restore', $task->id) }}" method="POST">
@@ -65,7 +65,7 @@
 
                                 <!-- Wipe Task Forever Button -->
                                 <form action="{{ route('admin.trash.tasks.wipe', $task->id) }}" method="POST"
-                                    onsubmit="return confirm('🚨 Wipe this task from the database forever?')">
+                                    onsubmit="return confirm('Wipe this task from the database forever?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900 font-bold transition">
@@ -73,7 +73,7 @@
                                     </button>
                                 </form>
                             @else
-                                <!-- 🟢 ACTIVE MODE ACTIONS -->
+                                <!--  ACTIVE MODE ACTIONS -->
                                 <a href="{{ route('tasks.show', $task->id) }}"
                                     class="text-blue-600 hover:underline">View</a>
 

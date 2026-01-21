@@ -84,13 +84,30 @@
 
                 @guest
                     <!-- Links visible only to Guests -->
-                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 font-medium">
+                    {{-- <a href="{{ route('login') }}"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200 shadow-sm">
+                        Login
+                    </a> --}}
+                     <a href="{{ route('login') }}" @class([
+                        'transition-colors duration-200',
+                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
+                            'login'),
+                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('login'),
+                    ])>
                         Login
                     </a>
-                    <a href="{{ route('register') }}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200 shadow-sm">
+                     <a href="{{ route('register') }}" @class([
+                        'transition-colors duration-200',
+                        'text-blue-600 font-bold border-b-2 border-blue-600' => request()->routeIs(
+                            'register'),
+                        'text-gray-600 hover:text-blue-500' => !request()->routeIs('register'),
+                    ])>
                         Register
                     </a>
+                    {{-- <a href="{{ route('register') }}"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200 shadow-sm">
+                        Register
+                    </a> --}}
                 @endguest
 
             </div>

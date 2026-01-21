@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function __construct(protected AuthService $authService) {}
+
     public function showLoginForm()
     {
         return view('auth.login');
