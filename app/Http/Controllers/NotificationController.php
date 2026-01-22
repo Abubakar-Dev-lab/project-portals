@@ -14,7 +14,7 @@ class NotificationController extends Controller
         // We paginate so the page stays fast even with 1,000 alerts
         $notifications = $user->notifications()->paginate(15);
 
-        // 2. 🛡️ THE LOGIC: Mark all unread notifications as read
+        // 2. THE LOGIC: Mark all unread notifications as read
         // This clears the red dot in the navbar
         $user->unreadNotifications->markAsRead();
 

@@ -40,7 +40,7 @@
                                 <a href="{{ route('admin.users.edit', $user->id) }}"
                                     class="text-yellow-600 hover:underline">Edit</a>
                             @endcan
-                            <!-- Senior Security Logic: Admin cannot delete themselves -->
+                            <!-- Admin cannot delete themselves -->
                             @can('delete', $user)
                                 @if ($user->is_active)
                                     @php

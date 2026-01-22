@@ -130,5 +130,20 @@ Module : Real time notification
 
 # Migration and Seeding
 # This creates the Super Admin (super@admin.com / password)
-sail artisan migrate:fresh --seed
+
+./vendor/bin/sail up -d
+
+./vendor/bin/sail artisan migrate:fresh --seed
+
+./vendor/bin/sail npm run dev
+
+./vendor/bin/sail artisan reverb:start --host="0.0.0.0"
+
+./vendor/bin/sail artisan queue:work
+
+./vendor/bin/sail stop
+
+
+
+
 

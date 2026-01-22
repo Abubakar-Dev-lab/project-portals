@@ -12,7 +12,7 @@
                 this.project = notification.project;
                 this.show = true;
 
-                // 2. 🛡️ THE SENIOR SYNC: Find the red dot in the navbar and show it
+                // 2. Find the red dot in the navbar and show it
                 const dot = document.getElementById('nav-notification-dot');
                 if (dot) {
                     dot.classList.remove('hidden');

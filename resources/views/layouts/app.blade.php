@@ -20,7 +20,7 @@
     <nav class="bg-white border-b border-gray-200 py-4 mb-8 shadow-sm">
         <div class="container mx-auto px-6 flex justify-between items-center">
 
-            <!-- Brand / Logo -->
+            <!-- Logo -->
             <a href="{{ route('projects.index') }}" class="text-2xl font-bold text-blue-600 tracking-tight">
                 DevPortal
             </a>
@@ -28,10 +28,10 @@
             <!-- Right Side Navigation -->
             <div class="flex items-center space-x-8">
                 @auth
-                    <!-- 🟢 THE SENIOR WAY: Use the partial for all links (including the Bell) -->
+                    <!--Using the partial for all links (including the Bell) -->
                     @include('layouts._nav-links')
 
-                    <!-- Secure Logout Form -->
+                    <!-- Logout Form -->
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
                         <button type="submit"
@@ -66,7 +66,7 @@
                 <p>{{ session('success') }}</p>
             </div>
             <script>
-                // Senior UX Touch: Auto-hide flash messages after 3 seconds
+                // Auto-hide flash messages after 3 seconds
                 setTimeout(() => {
                     const msg = document.getElementById('flash-msg');
                     if (msg) {
