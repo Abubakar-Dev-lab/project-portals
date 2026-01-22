@@ -96,8 +96,8 @@
     </table>
 
     @if (method_exists($projects, 'links') && $projects->hasPages())
-        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-            {{ $projects->links() }}
+        <div class="mt-6 bg-white p-4 rounded-xl shadow-sm border border-blue-100">
+             {{ $projects->links() }}
         </div>
     @endif
 </div>

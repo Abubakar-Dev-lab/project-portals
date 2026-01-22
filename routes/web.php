@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\TrashController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return redirect()->route('projects.index');
@@ -67,3 +68,6 @@ Route::prefix('profile')->middleware('auth')->name('profile.')->group(function (
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
     Route::put('/', [ProfileController::class, 'update'])->name('update');
 });
+
+
+Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');

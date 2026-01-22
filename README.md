@@ -126,9 +126,24 @@ N+1 Prevention: Standardized use of with() and load() across all Repositories an
 Memory Management: Replacing all() with paginate() and pluck() to ensure the server-side memory footprint remains small regardless of database size.
 Subquery Counting: Utilizing withCount() to fetch relationship statistics via SQL subqueries instead of loading full collections.
 
-
+Module : Real time notification
 
 # Migration and Seeding
 # This creates the Super Admin (super@admin.com / password)
-sail artisan migrate:fresh --seed
+
+./vendor/bin/sail up -d
+
+./vendor/bin/sail artisan migrate:fresh --seed
+
+./vendor/bin/sail npm run dev
+
+./vendor/bin/sail artisan reverb:start --host="0.0.0.0"
+
+./vendor/bin/sail artisan queue:work
+
+./vendor/bin/sail stop
+
+
+
+
 

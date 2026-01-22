@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Task;
 use App\Models\Project;
+use App\Observers\TaskObserver;
 use App\Observers\ProjectObserver;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Project::observe(ProjectObserver::class);
+        Task::observe(TaskObserver::class);
+        Paginator::useTailwind();
     }
 }
