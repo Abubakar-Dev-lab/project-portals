@@ -11,7 +11,11 @@ class ProjectPolicy
     {
         if ($user->isAdmin() || $user->isSuperAdmin()) return true;
     }
-
+    public function viewAny(User $user): bool
+    {
+        // Only Admins and Super Admins can see the user list
+        return $user->isAdmin();
+    }
     public function view(User $user, Project $project): bool
     {
         // A Manager can see it if they own it.
@@ -23,7 +27,7 @@ class ProjectPolicy
     // Check if user is even allowed to start a project
     public function create(User $user): bool
     {
-        return $user->role === User::ROLE_MANAGER ;
+        return $user->role === User::ROLE_MANAGER;
     }
 
     public function update(User $user, Project $project): bool

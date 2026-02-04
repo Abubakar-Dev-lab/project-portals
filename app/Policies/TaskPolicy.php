@@ -10,10 +10,13 @@ class TaskPolicy
 {
     public function before(User $user)
     {
-        if ($user->isAdmin() || $user->isSuperAdmin() ) return true;
+        if ($user->isAdmin() || $user->isSuperAdmin()) return true;
     }
 
-
+    public function viewAny(User $user): bool
+    {
+        return $user->isAdmin();
+    }
     /**
      * Determine whether the user can view the model.
      */

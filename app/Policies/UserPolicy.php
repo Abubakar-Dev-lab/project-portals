@@ -8,6 +8,16 @@ use Illuminate\Auth\Access\Response;
 class UserPolicy
 {
 
+    public function viewAny(User $user): bool
+    {
+        // Only Admins and Super Admins can see the user list
+        return $user->isAdmin();
+    }
+    public function view(User $user, User $targetUser): bool
+    {
+        // Admins can see anyone; regular users can only see themselves
+        return $user->isAdmin() || $user->id === $targetUser->id;
+    }
     /**
      * Determine whether the user can update the model.
      */

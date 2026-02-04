@@ -93,7 +93,7 @@ class TaskRepository
         return Task::onlyTrashed()
             ->with(['project', 'user'])
             ->latest('deleted_at')
-            ->paginate($perPage);
+            ->get();
     }
 
     /**

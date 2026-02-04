@@ -124,7 +124,7 @@ class ProjectRepository
         return Project::onlyTrashed()
             ->with('manager')
             ->latest('deleted_at')
-            ->paginate($perPage);
+            ->get();
     }
 
 
@@ -142,7 +142,9 @@ class ProjectRepository
      */
     public function restore(Project $project)
     {
-        return $project->restore();
+        $project->restore();
+
+        return $project;
     }
 
     /**

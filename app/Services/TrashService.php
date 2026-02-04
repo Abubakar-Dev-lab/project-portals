@@ -44,7 +44,7 @@ class TrashService
     {
         $task = $this->taskRepo->findTrashed($id);
 
-        // Safety Check: Prevent "Orphan" tasks by ensuring the parent project is active        $isProjectTrashed = Project::onlyTrashed()->where('id', $task->project_id)->exists();
+        // Safety Check: Prevent "Orphan" tasks by ensuring the parent project is active
         $isProjectTrashed = Project::onlyTrashed()->where('id', $task->project_id)->exists();
 
         if ($isProjectTrashed) {
